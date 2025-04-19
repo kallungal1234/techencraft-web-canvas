@@ -16,16 +16,14 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background GIF with overlay */}
-      <div 
-        className="absolute inset-0 w-full h-full"
-        style={{
-          backgroundImage: "url('https://cdn.dribbble.com/users/1626229/screenshots/8647423/media/eba2e2dddc3d4200e5d107d716bb53e8.gif')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
-      />
+      {/* Background video with overlay */}
+        <video 
+          className="absolute inset-0 w-full h-full object-cover"
+          src="C:\Users\anumo\Documents\techencraft-web-canvas\public\lovable-uploads\banner.mp4"
+          autoPlay
+          loop
+          muted
+        />
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80"></div>
       
       <div className="container mx-auto px-4 md:px-6 pt-24 pb-12 relative z-10">
