@@ -5,8 +5,10 @@ import HeroSection from '@/components/HeroSection';
 import AboutUs from '@/components/AboutUs';
 import ServicesSection from '@/components/ServicesSection';
 import LatestProjects from '@/components/LatestProjects';
+import WorkingStyle from '@/components/WorkingStyle';
 import TechStack from '@/components/TechStack';
 import WhyChooseUs from '@/components/WhyChooseUs';
+import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 
 const Index = () => {
@@ -17,8 +19,10 @@ const Index = () => {
       <AboutUs />
       <ServicesSection />
       <LatestProjects />
+      <WorkingStyle />
       <TechStack />
       <WhyChooseUs />
+      <ContactSection />
       <Footer />
     </div>
   );

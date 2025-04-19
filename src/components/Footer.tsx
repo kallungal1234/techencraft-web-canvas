@@ -13,7 +13,7 @@ const Footer = () => {
             <img 
               src="/lovable-uploads/62ed4bcb-70f5-4d32-95d9-bf78ea61fb8e.png" 
               alt="Techencraft Logo" 
-              className="h-8 brightness-0 invert"
+              className="h-8 md:h-10"
             />
             <p className="text-tech-blue-100">
               Crafting innovative digital solutions for businesses around the world.
@@ -32,19 +32,22 @@ const Footer = () => {
           </div>
           
           <div>
-            <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-xl font-semibold mb-4">Our Services</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-tech-blue-100 hover:text-white transition-colors duration-200">About</a>
+              <a href="#web-development" className="text-tech-blue-100 hover:text-white transition-colors duration-200">Web Development</a>
               </li>
               <li>
-                <a href="#" className="text-tech-blue-100 hover:text-white transition-colors duration-200">Services</a>
+              <a href="#web-designing" className="text-tech-blue-100 hover:text-white transition-colors duration-200">Web Designing</a>
               </li>
               <li>
-                <a href="#" className="text-tech-blue-100 hover:text-white transition-colors duration-200">Blog</a>
+              <a href="#logo-designing" className="text-tech-blue-100 hover:text-white transition-colors duration-200">Logo Designing</a>
               </li>
               <li>
-                <a href="#" className="text-tech-blue-100 hover:text-white transition-colors duration-200">Contact</a>
+              <a href="#cloud-devops" className="text-tech-blue-100 hover:text-white transition-colors duration-200">Cloud and DevOps</a>
+              </li>
+              <li>
+              <a href="#project-design" className="text-tech-blue-100 hover:text-white transition-colors duration-200">Project Design</a>
               </li>
             </ul>
           </div>

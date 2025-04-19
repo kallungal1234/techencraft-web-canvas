@@ -48,7 +48,7 @@ const WhyChooseUs = () => {
   }, []);
 
   const features = [
-    "6+ Years of Experience",
+    "10+ Years of Experience",
     "Agile Methodology",
     "Customer-Centric Approach",
     "Skilled Team with Hands-on Hardware Integration",
@@ -65,26 +65,11 @@ const WhyChooseUs = () => {
             isVisible && "animate-fade-in"
           )}>
             <div className="absolute inset-0 bg-gradient-to-tr from-tech-blue-500/10 to-tech-blue-400/5 rounded-3xl overflow-hidden backdrop-blur-sm border border-tech-blue-100">
-              <div className="p-8 h-full flex flex-col justify-center">
-                <div className={cn(
-                  "text-7xl font-bold text-tech-blue-500 opacity-0",
-                  isVisible && "animate-fade-in stagger-animate-1"
-                )}>
-                  100%
-                </div>
-                <div className={cn(
-                  "text-2xl font-medium mt-2 opacity-0",
-                  isVisible && "animate-fade-in stagger-animate-2"
-                )}>
-                  Client Satisfaction
-                </div>
-                <p className={cn(
-                  "mt-4 text-muted-foreground opacity-0",
-                  isVisible && "animate-fade-in stagger-animate-3"
-                )}>
-                  Our commitment to excellence ensures your project's success
-                </p>
-              </div>
+              <img 
+                src="/lovable-uploads/footer_top.jpg"
+                alt="Background" 
+                className="absolute inset-0 w-full h-full object-cover rounded-3xl opacity-3" 
+              />
             </div>
             <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-tech-blue-100/30 rounded-full blur-xl"></div>
             <div className="absolute -top-6 -left-6 w-24 h-24 bg-tech-blue-200/20 rounded-full blur-lg"></div>

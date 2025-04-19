@@ -30,7 +30,7 @@ const ProjectCard = ({ image, title, category, delay, isVisible }: ProjectCardPr
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
           <Button variant="outline" size="sm" className="bg-white text-tech-blue-900 hover:bg-tech-blue-500 hover:text-white">
-            View Project
+            <a href="#contact">Get In Touch</a>
           </Button>
         </div>
       </div>
@@ -70,34 +70,34 @@ const LatestProjects = () => {
 
   const projects = [
     {
-      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
-      title: "Custom E-Commerce Platform",
+      image: "/lovable-uploads/banking.jpg",
+      title: "Banking Domain",
+      category: "Web Development"
+    },    
+    {
+      image: "/lovable-uploads/lowyer.jpeg",
+      title: "Lowyers Diary ",
       category: "Web Development"
     },
     {
-      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
-      title: "Healthcare Management System",
-      category: "CRM Solutions"
-    },
-    {
-      image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
-      title: "Logistics Tracking App",
+      image: "/lovable-uploads/school.png",
+      title: "Schooling App",
       category: "Mobile Development"
     },
     {
-      image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1",
-      title: "Financial Analytics Dashboard",
+      image: "/lovable-uploads/matrimoniyal.jpeg",
+      title: "Indian Matrimonial",
       category: "Web Development"
     },
     {
-      image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
+      image: "/lovable-uploads/convergence.png",
       title: "Educational Platform",
       category: "CMS Development"
     },
     {
-      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
-      title: "Inventory Management System",
-      category: "Enterprise Solutions"
+      image: "/lovable-uploads/mrf.jpeg",
+      title: "MRF Tyre Retreading",
+      category: "ERP APPLICATION"
     }
   ];
 
@@ -131,16 +131,6 @@ const LatestProjects = () => {
               isVisible={isVisible}
             />
           ))}
-        </div>
-        
-        <div className={cn(
-          "mt-12 text-center opacity-0",
-          isVisible && "animate-fade-in stagger-animate-6"
-        )}>
-          <Button className="group button-gradient">
-            View All Projects
-            <ArrowRight className="ml-1 group-hover:translate-x-1 transition-transform duration-300" size={16} />
-          </Button>
         </div>
       </div>
     </section>

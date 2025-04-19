@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Wrench, Smartphone, Code, Database, Briefcase, FileText } from 'lucide-react';
@@ -13,24 +12,58 @@ interface ServiceCardProps {
 }
 
 const ServiceCard = ({ icon, title, description, delay, isVisible }: ServiceCardProps) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const card = cardRef.current;
+    if (!card) return;
+
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = ((y - centerY) / centerY) * -5;
+    const rotateY = ((x - centerX) / centerX) * 5;
+
+    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+  };
+
+  const resetTilt = () => {
+    const card = cardRef.current;
+    if (card) {
+      card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+    }
+  };
+
   return (
-    <Card 
+    <Card
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={resetTilt}
       className={cn(
-        "card-hover relative border-none p-6 opacity-0 h-full flex flex-col group transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 cursor-pointer bg-white rounded-xl overflow-hidden",
-        isVisible && `animate-fade-in stagger-animate-${delay}`,
-        "before:content-[''] before:absolute before:inset-0 before:bg-gradient-to-r before:from-tech-blue-100/20 before:via-tech-blue-200/20 before:to-tech-blue-100/20 before:translate-x-[-100%] before:hover:translate-x-[100%] before:transition-transform before:duration-700 before:ease-in-out"
+        "relative p-6 opacity-0 h-full flex flex-col group bg-white rounded-xl overflow-hidden transition-all duration-300 ease-in-out shadow-lg cursor-pointer will-change-transform",
+        isVisible && `animate-fade-in stagger-animate-${delay}`
       )}
     >
-      <div className="relative z-10 bg-gradient-to-br from-tech-blue-500 to-tech-blue-600 p-3 rounded-lg w-fit mb-4 text-white group-hover:scale-110 transition-transform duration-300">
+      {/* Gradient shimmer border on hover */}
+      <div className="absolute inset-0 rounded-xl border border-transparent group-hover:border-transparent before:content-[''] before:absolute before:inset-[-2px] before:rounded-xl before:bg-gradient-to-r before:from-tech-blue-400 before:via-tech-blue-300 before:to-tech-blue-400 before:opacity-0 group-hover:before:opacity-100 before:transition-opacity before:duration-500 z-0 pointer-events-none" />
+
+      <div className="relative z-10 bg-gradient-to-br from-tech-blue-500 to-tech-blue-600 p-3 rounded-lg w-fit mb-4 text-white group-hover:shadow-lg group-hover:shadow-tech-blue-400/40 transition-all duration-300">
         {icon}
       </div>
+
       <h3 className="relative z-10 text-xl font-bold mb-3 text-tech-blue-900 group-hover:text-tech-blue-600 transition-colors duration-300">
         {title}
       </h3>
+
       <p className="relative z-10 text-muted-foreground group-hover:text-tech-blue-900/80 transition-colors duration-300 text-sm leading-relaxed">
         {description}
       </p>
-      <div className="absolute right-0 bottom-0 w-24 h-24 bg-gradient-to-tr from-tech-blue-100/20 to-transparent rounded-tl-full transform translate-x-6 translate-y-6 group-hover:translate-x-3 group-hover:translate-y-3 transition-transform duration-500" />
+
+      <div className="absolute right-0 bottom-0 w-24 h-24 bg-gradient-to-tr from-tech-blue-100/20 to-transparent rounded-tl-full transform translate-x-6 translate-y-6 group-hover:translate-x-3 group-hover:translate-y-3 transition-transform duration-500 z-0" />
     </Card>
   );
 };
@@ -54,9 +87,7 @@ const ServicesSection = () => {
       observer.observe(sectionRef.current);
     }
 
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
   const services = [

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Menu, X } from 'lucide-react';
@@ -10,9 +9,8 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      setIsScrolled(window.scrollY > 20);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -22,14 +20,12 @@ const Navbar = () => {
   };
 
   return (
-    <header 
-      className={cn(
-        "fixed top-0 left-0 w-full z-50 transition-all duration-300",
-        isScrolled ? "bg-white/90 backdrop-blur-md shadow-md py-2" : "bg-transparent py-4"
-      )}
-    >
+    <header className={cn(
+      "fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out",
+      isScrolled ? "bg-white/90 backdrop-blur-md shadow-md py-2 animate-slide-down" : "bg-transparent py-4"
+    )}>
       <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
-        <a href="/" className="flex items-center opacity-90 hover:opacity-100 transition-opacity">
+        <a href="/" className="flex items-center transition-opacity duration-300 hover:opacity-100 opacity-90">
           <img 
             src="/lovable-uploads/62ed4bcb-70f5-4d32-95d9-bf78ea61fb8e.png" 
             alt="Techencraft Logo" 
@@ -39,12 +35,17 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <a href="#about" className="nav-link font-medium">About</a>
-          <a href="#services" className="nav-link font-medium">Services</a>
-          <a href="#tech-stack" className="nav-link font-medium">Tech Stack</a>
-          <a href="#why-us" className="nav-link font-medium">Why Us</a>
-          <Button className="bg-tech-blue-500 hover:bg-tech-blue-600 text-white">
-            Contact Us
+          {['about', 'services', 'tech-stack', 'why-us'].map(section => (
+            <a 
+              key={section}
+              href={`#${section}`}
+              className="nav-link font-medium text-tech-blue-950 relative after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-tech-blue-500 hover:after:w-full after:transition-all after:duration-300"
+            >
+              {section.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+            </a>
+          ))}
+          <Button className="bg-tech-blue-500 hover:bg-tech-blue-600 text-white transition-transform transform hover:scale-105 hover:shadow-lg">
+            <a href="#contact">Contact Us</a>
           </Button>
         </nav>
 
@@ -59,41 +60,23 @@ const Navbar = () => {
         </Button>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Menu */}
       <div className={cn(
-        "fixed inset-0 bg-white z-40 transition-transform duration-300 md:hidden pt-20",
-        isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        "fixed inset-0 bg-white z-40 transform transition-transform duration-500 ease-in-out md:hidden",
+        isMobileMenuOpen ? "translate-x-0 opacity-100 scale-100" : "translate-x-full opacity-0 scale-95"
       )}>
-        <nav className="flex flex-col items-center space-y-6 py-8">
-          <a 
-            href="#about" 
-            className="text-xl font-medium nav-link"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            About
-          </a>
-          <a 
-            href="#services" 
-            className="text-xl font-medium nav-link"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Services
-          </a>
-          <a 
-            href="#tech-stack" 
-            className="text-xl font-medium nav-link"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Tech Stack
-          </a>
-          <a 
-            href="#why-us" 
-            className="text-xl font-medium nav-link"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Why Us
-          </a>
-          <Button className="bg-tech-blue-500 hover:bg-tech-blue-600 text-white mt-4 w-48">
+        <nav className="flex flex-col items-center space-y-6 pt-24 transition-opacity">
+          {['about', 'services', 'tech-stack', 'why-us'].map(section => (
+            <a
+              key={section}
+              href={`#${section}`}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-xl font-medium nav-link text-tech-blue-950 hover:text-tech-blue-600 transition-colors"
+            >
+              {section.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+            </a>
+          ))}
+          <Button className="bg-tech-blue-500 hover:bg-tech-blue-600 text-white mt-4 w-48 hover:scale-105 transition-transform">
             Contact Us
           </Button>
         </nav>
