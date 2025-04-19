@@ -27,7 +27,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
         <a href="/" className="flex items-center transition-opacity duration-300 hover:opacity-100 opacity-90">
           <img 
-            src="/lovable-uploads/62ed4bcb-70f5-4d32-95d9-bf78ea61fb8e.png" 
+            src="/lovable-uploads/logo3.jpg" 
             alt="Techencraft Logo" 
             className="h-8 md:h-10"
           />
