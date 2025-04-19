@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Wrench, Smartphone, Code, Database, Briefcase, FileText } from 'lucide-react';
@@ -16,15 +15,16 @@ const ServiceCard = ({ icon, title, description, delay, isVisible }: ServiceCard
   return (
     <Card 
       className={cn(
-        "card-hover border border-tech-blue-100 p-6 opacity-0 h-full flex flex-col",
-        isVisible && `animate-fade-in stagger-animate-${delay}`
+        "card-hover border border-tech-blue-100 p-6 opacity-0 h-full flex flex-col group transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer bg-white relative overflow-hidden",
+        isVisible && `animate-fade-in stagger-animate-${delay}`,
+        "before:content-[''] before:absolute before:inset-0 before:bg-gradient-to-r before:from-tech-blue-50/50 before:via-tech-blue-100/50 before:to-tech-blue-50/50 before:translate-x-[-100%] before:hover:translate-x-[100%] before:transition-transform before:duration-500 before:ease-in-out"
       )}
     >
-      <div className="bg-tech-blue-50 p-3 rounded-lg w-fit mb-4">
+      <div className="bg-tech-blue-50 p-3 rounded-lg w-fit mb-4 group-hover:bg-tech-blue-100 transition-colors duration-300">
         {icon}
       </div>
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
-      <p className="text-muted-foreground">{description}</p>
+      <h3 className="text-xl font-semibold mb-2 group-hover:text-tech-blue-600 transition-colors duration-300">{title}</h3>
+      <p className="text-muted-foreground group-hover:text-tech-blue-900/80 transition-colors duration-300">{description}</p>
     </Card>
   );
 };
