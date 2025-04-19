@@ -1,7 +1,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { Wrench, Mobile, Code, Database, Briefcase, FileText } from 'lucide-react';
+import { Wrench, Smartphone, Code, Database, Briefcase, FileText } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 
 interface ServiceCardProps {
@@ -60,7 +60,7 @@ const ServicesSection = () => {
       description: "We build scalable, secure, and modern web applications tailored to your business goals."
     },
     {
-      icon: <Mobile className="h-6 w-6 text-tech-blue-500" />,
+      icon: <Smartphone className="h-6 w-6 text-tech-blue-500" />,
       title: "Mobile App Development",
       description: "Native and cross-platform apps for Android and iOS—crafted with performance and design in mind."
     },
