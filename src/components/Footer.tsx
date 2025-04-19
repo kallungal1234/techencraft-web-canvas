@@ -11,9 +11,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div className="space-y-4">
             <img 
-              src="/lovable-uploads/62ed4bcb-70f5-4d32-95d9-bf78ea61fb8e.png" 
+              src="/lovable-uploads/logo.jpg" 
               alt="Techencraft Logo" 
-              className="h-8 md:h-10"
+              className="h-12 md:h-14"
             />
             <p className="text-tech-blue-100">
               Crafting innovative digital solutions for businesses around the world.

@@ -44,9 +44,10 @@ const ServiceCard = ({ icon, title, description, delay, isVisible }: ServiceCard
       onMouseMove={handleMouseMove}
       onMouseLeave={resetTilt}
       className={cn(
-        "relative p-6 opacity-0 h-full flex flex-col group bg-white rounded-xl overflow-hidden transition-all duration-300 ease-in-out shadow-lg cursor-pointer will-change-transform",
+        "relative p-6 opacity-0 h-full flex flex-col group rounded-xl overflow-hidden transition-all duration-300 ease-in-out shadow-lg cursor-pointer will-change-transform bg-white hover:bg-gradient-to-br hover:from-white hover:to-blue-100",
         isVisible && `animate-fade-in stagger-animate-${delay}`
       )}
+      
     >
       {/* Gradient shimmer border on hover */}
       <div className="absolute inset-0 rounded-xl border border-transparent group-hover:border-transparent before:content-[''] before:absolute before:inset-[-2px] before:rounded-xl before:bg-gradient-to-r before:from-tech-blue-400 before:via-tech-blue-300 before:to-tech-blue-400 before:opacity-0 group-hover:before:opacity-100 before:transition-opacity before:duration-500 z-0 pointer-events-none" />

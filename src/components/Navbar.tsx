@@ -29,7 +29,7 @@ const Navbar = () => {
           <img 
             src="/lovable-uploads/logo.jpg" 
             alt="Techencraft Logo" 
-            className="h-8 md:h-10"
+            className="h-20 md:h-24"
           />
         </a>
 
