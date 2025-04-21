@@ -27,9 +27,9 @@ const Navbar = () => {
       <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
         <a href="/" className="flex items-center transition-opacity duration-300 hover:opacity-100 opacity-90">
           <img 
-            src="/lovable-uploads/logo.jpg" 
+            src={isScrolled ? "/lovable-uploads/logo-dark.png" : "/lovable-uploads/logo-white.png"} 
             alt="Techencraft Logo" 
-            className="h-16 md:h-20"
+            className="h-16 md:h-20 transition-all duration-300"
           />
         </a>
 
@@ -39,7 +39,10 @@ const Navbar = () => {
             <a 
               key={section}
               href={`#${section}`}
-              className="nav-link font-medium text-tech-blue-950 relative after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-tech-blue-500 hover:after:w-full after:transition-all after:duration-300"
+              className={cn(
+                "nav-link font-medium relative after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-tech-blue-500 hover:after:w-full after:transition-all after:duration-300",
+                isScrolled ? "text-tech-blue-950" : "text-white"
+              )}
             >
               {section.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
             </a>
@@ -53,7 +56,7 @@ const Navbar = () => {
         <Button 
           variant="ghost" 
           size="icon" 
-          className="md:hidden" 
+          className={cn("md:hidden", isScrolled ? "text-tech-blue-950" : "text-white")} 
           onClick={toggleMobileMenu}
         >
           {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}

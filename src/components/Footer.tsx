@@ -11,7 +11,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div className="space-y-4">
             <img 
-              src="/lovable-uploads/logo.jpg" 
+              src="/lovable-uploads/logo-white.png" 
               alt="Techencraft Logo" 
               className="h-12 md:h-14"
             />
