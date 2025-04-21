@@ -44,7 +44,7 @@ const ServiceCard = ({ icon, title, description, delay, isVisible }: ServiceCard
       onMouseMove={handleMouseMove}
       onMouseLeave={resetTilt}
       className={cn(
-        "relative p-6 opacity-0 h-full flex flex-col group rounded-xl overflow-hidden transition-all duration-300 ease-in-out shadow-lg cursor-pointer will-change-transform bg-white hover:bg-gradient-to-br hover:from-white hover:to-blue-100",
+        "relative p-6 opacity-0 h-full flex flex-col group rounded-xl overflow-hidden transition-all duration-300 ease-in-out shadow-lg cursor-pointer will-change-transform bg-white hover:bg-gradient-to-br hover:from-white hover:to-blue-10",
         isVisible && `animate-fade-in stagger-animate-${delay}`
       )}
       

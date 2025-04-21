@@ -18,13 +18,13 @@ const HeroSection = () => {
       <video
         className="absolute inset-0 w-full h-full object-cover"
         src="/lovable-uploads/banner.mp4"
+        poster="/lovable-uploads/banner_poster.jpg"
         autoPlay
         loop
         muted
         playsInline
-        preload="auto">
-      </video>
-
+        preload="auto"
+      />
 
       {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80 z-0" />
@@ -71,21 +71,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-
-      {/* Floating shapes */}
-      <div
-        className={cn(
-          "absolute bottom-20 right-[10%] w-24 h-24 rounded-full bg-gradient-to-tr from-tech-blue-400/40 to-tech-blue-200/50 backdrop-blur-md transition-opacity duration-700 delay-700",
-          isVisible ? "animate-float opacity-70" : "opacity-0"
-        )}
-      ></div>
-
-      <div
-        className={cn(
-          "absolute top-40 left-[15%] w-16 h-16 rounded-full bg-gradient-to-bl from-tech-blue-300/40 to-tech-blue-100/50 backdrop-blur-sm transition-opacity duration-700 delay-900",
-          isVisible ? "animate-float opacity-60" : "opacity-0"
-        )}
-      ></div>
     </section>
   );
 };
