@@ -7,17 +7,25 @@ import { cn } from "@/lib/utils";
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
   }, []);
 
+  const handleVideoLoaded = () => {
+    setVideoLoaded(true);
+  };
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background video */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-900">
+      {/* Background video with optimized loading */}
       <video
-        className="absolute inset-0 w-full h-full object-cover"
+        className={cn(
+          "absolute inset-0 w-full h-full object-cover transition-opacity duration-300",
+          videoLoaded ? "opacity-100" : "opacity-0"
+        )}
         src="/lovable-uploads/banner_new.mp4"
         poster="/lovable-uploads/thumbnail.jpg"
         autoPlay
@@ -25,6 +33,7 @@ const HeroSection = () => {
         muted
         playsInline
         preload="auto"
+        onLoadedData={handleVideoLoaded}
       />
 
       {/* Gradient overlay */}
@@ -77,4 +86,3 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
-
