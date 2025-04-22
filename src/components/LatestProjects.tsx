@@ -4,22 +4,39 @@ import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
+
+// Animation utility
+const glideAnimations = [
+  "animate-fade-in",
+  "animate-fade-in-right",
+  "animate-fade-in-left",
+  "animate-scale-in"
+];
 
 interface ProjectCardProps {
   image: string;
   title: string;
   category: string;
-  delay: number;
-  isVisible: boolean;
+  index: number;
 }
 
-const ProjectCard = ({ image, title, category, delay, isVisible }: ProjectCardProps) => {
+const ProjectCard = ({ image, title, category, index }: ProjectCardProps) => {
   return (
     <Card 
       className={cn(
-        "card-hover relative border-none opacity-0 h-full flex flex-col group transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 cursor-pointer overflow-hidden rounded-xl",
-        isVisible && `animate-fade-in stagger-animate-${delay}`
+        "card-hover relative border-none h-full flex flex-col group cursor-pointer overflow-hidden rounded-xl shadow-lg bg-white transition-transform duration-700",
+        glideAnimations[index % glideAnimations.length]
       )}
+      style={{
+        animationDelay: `${150 + index * 100}ms`
+      }}
     >
       <div className="relative overflow-hidden h-[240px]">
         <img 
@@ -29,16 +46,16 @@ const ProjectCard = ({ image, title, category, delay, isVisible }: ProjectCardPr
           decoding="async"
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-          <Button variant="outline" size="sm" className="bg-white text-tech-blue-900 hover:bg-tech-blue-500 hover:text-white">
-            <a href="#contact">Get In Touch</a>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-80 transition-opacity duration-300"></div>
+        <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]">
+          <Button variant="outline" size="sm" className="bg-white/90 text-tech-blue-900 hover:bg-tech-blue-500 hover:text-white font-semibold shadow">
+            <a href="#contact" className="transition-all">Get In Touch</a>
           </Button>
         </div>
       </div>
-      <div className="p-5 bg-white">
-        <p className="text-sm text-tech-blue-500 font-medium">{category}</p>
-        <h3 className="text-lg font-bold mt-1 text-tech-blue-900 group-hover:text-tech-blue-600 transition-colors duration-300">
+      <div className="p-5 bg-white bg-opacity-80 backdrop-blur rounded-b-xl">
+        <p className="text-sm text-tech-blue-500 font-semibold tracking-wide mb-1">{category}</p>
+        <h3 className="text-lg font-bold text-tech-blue-900 group-hover:text-tech-blue-600 transition-colors duration-300">
           {title}
         </h3>
       </div>
@@ -51,23 +68,17 @@ const LatestProjects = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    const observer = new window.IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
           observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.08 }
     );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      observer.disconnect();
-    };
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
   }, []);
 
   const projects = [
@@ -104,35 +115,59 @@ const LatestProjects = () => {
   ];
 
   return (
-    <section id="projects" ref={sectionRef} className="py-16 bg-gray-50 relative overflow-hidden">
-      <div className="container mx-auto px-4 md:px-6 relative">
+    <section
+      id="projects"
+      ref={sectionRef}
+      className={cn(
+        "py-16 relative overflow-hidden bg-gradient-to-b from-[#f6faff] via-white/80 to-[#e5edfa]",
+        isVisible ? "animate-fade-in" : "opacity-0"
+      )}
+      style={{ transition: 'opacity 0.9s cubic-bezier(0.4,0,0.2,1)' }}
+    >
+      {/* Glimmer background effect */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute left-1/3 top-0 w-[480px] h-[180px] bg-gradient-to-tr from-tech-blue-100 via-white/80 to-tech-blue-200 rounded-full blur-2xl opacity-40"></div>
+        <div className="absolute right-0 top-1/2 w-[340px] h-[170px] bg-gradient-to-tr from-pink-100 via-white/60 to-tech-blue-100 rounded-full blur-3xl opacity-30"></div>
+      </div>
+      <div className="relative container mx-auto px-5 md:px-8">
         <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className={cn(
-            "text-3xl md:text-4xl font-bold opacity-0 text-tech-blue-900",
-            isVisible && "animate-fade-in"
+            "text-3xl md:text-4xl font-extrabold text-tech-blue-900 tracking-tight drop-shadow animate-fade-in",
+            isVisible && "glow"
           )}>
             Latest Projects
           </h2>
-          <div className="w-20 h-1 bg-tech-blue-500 mx-auto my-4"></div>
+          <div className="w-20 h-1 mt-3 bg-gradient-to-r from-tech-blue-400 to-tech-blue-600 mx-auto rounded-full"></div>
           <p className={cn(
-            "mt-4 text-lg text-muted-foreground opacity-0",
-            isVisible && "animate-fade-in stagger-animate-1"
+            "mt-4 text-lg text-tech-blue-600 font-medium transition-opacity opacity-90"
           )}>
             Explore our recent work across various industries and technologies
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project, index) => (
-            <ProjectCard
-              key={index}
-              image={project.image}
-              title={project.title}
-              category={project.category}
-              delay={Math.min(index + 1, 6)}
-              isVisible={isVisible}
-            />
-          ))}
+        <div className="relative max-w-5xl mx-auto px-3 md:px-0">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true
+            }}
+            className="group max-w-full"
+          >
+            <CarouselContent>
+              {projects.map((project, idx) => (
+                <CarouselItem key={idx} className="sm:basis-1/2 lg:basis-1/3 px-2">
+                  <ProjectCard
+                    image={project.image}
+                    title={project.title}
+                    category={project.category}
+                    index={idx}
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="z-10 bg-white/80 shadow-lg hover:bg-tech-blue-500 hover:text-white transition-all -left-5" />
+            <CarouselNext className="z-10 bg-white/80 shadow-lg hover:bg-tech-blue-500 hover:text-white transition-all -right-5" />
+          </Carousel>
         </div>
       </div>
     </section>
@@ -140,4 +175,3 @@ const LatestProjects = () => {
 };
 
 export default LatestProjects;
-
