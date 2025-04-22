@@ -4,11 +4,14 @@ import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
-import SwiperCore, { Autoplay, Grid, EffectCreative } from "swiper";
+// Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
+// Import Swiper styles
 import "swiper/css";
 import "swiper/css/grid";
 import "swiper/css/effect-creative";
+// Import required modules
+import { Autoplay, Grid, EffectCreative } from "swiper/modules";
 
 // Animation utility
 const glideAnimations = [
@@ -63,8 +66,6 @@ const ProjectCard = ({ image, title, category, index }: ProjectCardProps) => {
     </Card>
   );
 };
-
-SwiperCore.use([Autoplay, Grid, EffectCreative]);
 
 const LatestProjects = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -151,6 +152,7 @@ const LatestProjects = () => {
 
         <div className="relative max-w-5xl mx-auto md:px-0">
           <Swiper 
+            modules={[Autoplay, Grid, EffectCreative]}
             slidesPerView={2}
             grid={{
               rows: 2,
