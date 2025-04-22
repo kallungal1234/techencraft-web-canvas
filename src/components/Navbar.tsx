@@ -9,7 +9,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 20); // Set to true when scrolling down 20px
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -23,8 +23,10 @@ const Navbar = () => {
     <header
       className={cn(
         'fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out',
-        // Always white on mobile, scrolled white on desktop
-        'bg-white shadow-md py-2'
+        // Set background to transparent or white depending on scroll state
+        isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4',
+        // Always white on mobile
+        'md:py-2'
       )}
     >
       <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
