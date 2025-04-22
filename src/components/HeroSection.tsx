@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -14,16 +15,14 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background video */}
-      <video
-        className="absolute inset-0 w-full h-full object-cover"
-        src="/lovable-uploads/banner.mp4"
-        poster="/lovable-uploads/banner_poster.jpg"
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
+      {/* Background innovative GIF image, lazy loaded */}
+      <img
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
+        src="/lovable-uploads/innovative-banner.gif"
+        alt="Innovative AI Banner"
+        loading="eager"
+        decoding="async"
+        style={{ zIndex: 0 }}
       />
 
       {/* Gradient overlay */}
@@ -76,3 +75,4 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+
