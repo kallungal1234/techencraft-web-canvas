@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Wrench, Smartphone, Code, Database, Briefcase, FileText } from 'lucide-react';
@@ -47,32 +46,34 @@ const ServiceCard = ({ icon, title, description, delay, isVisible }: ServiceCard
       onMouseMove={handleMouseMove}
       onMouseLeave={resetTilt}
       className={cn(
-        "relative p-6 opacity-0 h-full flex flex-col group rounded-xl overflow-hidden transition-all duration-500 ease-in-out shadow-lg cursor-pointer will-change-transform bg-white hover:bg-gradient-to-bl hover:from-white/80 hover:to-blue-50",
+        "relative p-6 opacity-0 h-full flex flex-col group rounded-xl overflow-hidden transition-all duration-500 ease-in-out shadow-lg cursor-pointer will-change-transform bg-white hover:bg-light-blue-100",
         isVisible && `animate-fade-in stagger-animate-${delay}`,
         "hover:shadow-tech-blue-200/70"
       )}
-      
       style={{
         animationDelay: `${delay * 100 + 80}ms`
       }}
     >
-      {/* Gradient shimmer border on hover */}
-      <div className="absolute inset-0 rounded-xl border border-transparent group-hover:border-transparent before:content-[''] before:absolute before:inset-[-3px] before:rounded-xl before:bg-gradient-to-r before:from-tech-blue-500 before:via-white/50 before:to-tech-blue-200 before:opacity-0 group-hover:before:opacity-100 before:transition-opacity before:duration-400 z-0 pointer-events-none"></div>
+      {/* Soft Glow Effect on Hover */}
+      <div className="absolute inset-0 rounded-xl border border-transparent group-hover:border-transparent before:content-[''] before:absolute before:inset-[-3px] before:rounded-xl before:bg-gradient-to-r before:from-tech-blue-400 before:to-tech-blue-200 before:opacity-0 group-hover:before:opacity-100 before:transition-opacity before:duration-500 z-0 pointer-events-none" />
 
-      <div className="relative z-10 bg-gradient-to-tr from-tech-blue-500 to-tech-blue-300 p-3 rounded-lg w-fit mb-4 text-white group-hover:shadow-lg group-hover:shadow-tech-blue-100/50 transition-all duration-300">
+      {/* Icon with Shadow and Solid Background */}
+      <div className="relative z-10 bg-tech-blue-600 p-3 rounded-lg w-fit mb-4 text-white group-hover:shadow-xl group-hover:shadow-tech-blue-500/50 transition-all duration-300">
         {icon}
       </div>
 
-      <h3 className="relative z-10 text-xl font-bold mb-3 text-tech-blue-900 group-hover:text-tech-blue-600 transition-colors duration-300 drop-shadow">
+      {/* Title with Drop Shadow and Color Transition */}
+      <h3 className="relative z-10 text-xl font-bold mb-3 text-tech-blue-900 group-hover:text-tech-blue-700 transition-colors duration-300 drop-shadow-md">
         {title}
       </h3>
 
+      {/* Description with Text Transition */}
       <p className="relative z-10 text-muted-foreground group-hover:text-tech-blue-900/90 transition-colors duration-300 text-sm leading-relaxed">
         {description}
       </p>
 
-      <div className="absolute right-0 bottom-0 w-24 h-24 bg-gradient-to-tr from-tech-blue-100/20 to-transparent rounded-tl-full transform translate-x-6 translate-y-6 group-hover:translate-x-3 group-hover:translate-y-3 transition-transform duration-500 z-0" />
-      <div className="absolute left-0 top-0 w-8 h-8 bg-gradient-to-br from-tech-blue-50 via-blue-50 to-transparent rounded-br-full blur opacity-70 group-hover:scale-110 transition-transform duration-500 z-0" />
+      {/* Decorative Rounded Shapes */}
+      <div className="absolute right-0 bottom-0 w-20 h-20 bg-gradient-to-tr from-tech-blue-100/50 to-transparent rounded-tl-full transform translate-x-6 translate-y-6 group-hover:translate-x-3 group-hover:translate-y-3 transition-transform duration-500 z-0" />
     </Card>
   );
 };
@@ -134,20 +135,14 @@ const ServicesSection = () => {
 
   return (
     <section id="services" ref={sectionRef} className="py-16 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
-      <div className="absolute inset-0 code-background opacity-10"></div>
+      <div className="absolute inset-0 code-background opacity-10" />
       <div className="container mx-auto px-4 md:px-6 relative">
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <h2 className={cn(
-            "text-3xl md:text-4xl font-bold opacity-0 text-tech-blue-900 drop-shadow-lg",
-            isVisible && "animate-fade-in"
-          )}>
+          <h2 className={cn("text-3xl md:text-4xl font-bold opacity-0 text-tech-blue-900 drop-shadow-lg", isVisible && "animate-fade-in")}>
             Our Services
           </h2>
-          <div className="w-20 h-1 bg-tech-blue-500 mx-auto my-4 rounded-lg"></div>
-          <p className={cn(
-            "mt-4 text-lg text-muted-foreground opacity-0",
-            isVisible && "animate-fade-in stagger-animate-1"
-          )}>
+          <div className="w-20 h-1 bg-tech-blue-500 mx-auto my-4 rounded-lg" />
+          <p className={cn("mt-4 text-lg text-muted-foreground opacity-0", isVisible && "animate-fade-in stagger-animate-1")}>
             We offer a comprehensive range of services to transform your digital vision into reality
           </p>
         </div>
@@ -165,8 +160,9 @@ const ServicesSection = () => {
           ))}
         </div>
       </div>
-      <div className="absolute w-80 h-80 bg-gradient-to-br from-tech-blue-100 via-tech-blue-200/80 to-white left-[-120px] top-[-80px] blur-3xl opacity-30 rounded-full pointer-events-none"></div>
-      <div className="absolute w-96 h-96 bg-gradient-to-r from-sky-200/40 via-white/40 to-tech-blue-100/70 right-[-180px] bottom-0 blur-2xl opacity-40 rounded-full pointer-events-none"></div>
+
+      <div className="absolute w-80 h-80 bg-gradient-to-br from-tech-blue-100 via-tech-blue-200/80 to-white left-[-120px] top-[-80px] blur-3xl opacity-30 rounded-full pointer-events-none" />
+      <div className="absolute w-96 h-96 bg-gradient-to-r from-sky-200/40 via-white/40 to-tech-blue-100/70 right-[-180px] bottom-0 blur-2xl opacity-40 rounded-full pointer-events-none" />
     </section>
   );
 };

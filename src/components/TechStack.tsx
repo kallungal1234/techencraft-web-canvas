@@ -71,7 +71,6 @@ const TechStack = () => {
 
   return (
     <section id="tech-stack" ref={sectionRef} className="py-20 md:py-24 bg-white relative overflow-hidden">
-      <div className="absolute inset-0 particles opacity-40"></div>
       <div className="container mx-auto px-4 md:px-6 relative">
         <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
           <h2 className={cn(

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Mail, Phone, Github, Linkedin, Instagram } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,14 +5,14 @@ import { Button } from '@/components/ui/button';
 const Footer = () => {
   return (
     <footer className="bg-tech-blue-900 text-white py-16 relative overflow-hidden">
-      {/* Animated background glimmer & particles */}
+      {/* Animated background glimmer */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 code-background opacity-10"></div>
         <div className="absolute left-1/2 top-0 w-[380px] h-40 bg-gradient-to-br from-white/20 via-tech-blue-400/20 to-tech-blue-900/10 rounded-full blur-2xl opacity-60 -translate-x-1/2"></div>
         <div className="absolute bottom-[-40px] right-[12%] w-[320px] h-32 bg-gradient-to-t from-pink-100/25 to-blue-100/10 rounded-full blur-3xl opacity-25"></div>
         <div className="absolute top-[26%] left-4 w-32 h-16 bg-gradient-to-br from-tech-blue-300 via-white/10 to-tech-blue-100/10 rounded-full blur-2xl opacity-30"></div>
-        <div className="particles absolute inset-0"></div>
       </div>
+      
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div className="space-y-4">
@@ -42,19 +41,19 @@ const Footer = () => {
             <h3 className="text-xl font-semibold mb-4">Our Services</h3>
             <ul className="space-y-2">
               <li>
-              <a href="#web-development" className="text-tech-blue-100 hover:text-white transition-colors duration-200">Web Development</a>
+                <a href="#web-development" className="text-tech-blue-100 hover:text-white transition-colors duration-200">Web Development</a>
               </li>
               <li>
-              <a href="#web-designing" className="text-tech-blue-100 hover:text-white transition-colors duration-200">Web Designing</a>
+                <a href="#web-designing" className="text-tech-blue-100 hover:text-white transition-colors duration-200">Web Designing</a>
               </li>
               <li>
-              <a href="#logo-designing" className="text-tech-blue-100 hover:text-white transition-colors duration-200">Logo Designing</a>
+                <a href="#logo-designing" className="text-tech-blue-100 hover:text-white transition-colors duration-200">Logo Designing</a>
               </li>
               <li>
-              <a href="#cloud-devops" className="text-tech-blue-100 hover:text-white transition-colors duration-200">Cloud and DevOps</a>
+                <a href="#cloud-devops" className="text-tech-blue-100 hover:text-white transition-colors duration-200">Cloud and DevOps</a>
               </li>
               <li>
-              <a href="#project-design" className="text-tech-blue-100 hover:text-white transition-colors duration-200">Project Design</a>
+                <a href="#project-design" className="text-tech-blue-100 hover:text-white transition-colors duration-200">Project Design</a>
               </li>
             </ul>
           </div>

@@ -1,15 +1,14 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
-// Fix: Import Swiper modules in lowercase
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/grid";
 import "swiper/css/effect-creative";
 import { Autoplay, Grid, EffectCreative } from "swiper/modules";
+import { motion } from "framer-motion";  // Integrating Framer Motion for smoother animations
 
 const glideAnimations = [
   "animate-fade-in",
@@ -27,7 +26,7 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ image, title, category, index }: ProjectCardProps) => {
   return (
-    <Card 
+    <Card
       className={cn(
         "card-hover relative border-none h-full flex flex-col group cursor-pointer overflow-hidden rounded-xl shadow-lg bg-white transition-transform duration-700 hover:shadow-2xl hover:bg-gradient-to-t hover:from-white hover:to-tech-blue-50/70 ring-1 ring-tech-blue-100/70",
         glideAnimations[index % glideAnimations.length]
@@ -36,30 +35,41 @@ const ProjectCard = ({ image, title, category, index }: ProjectCardProps) => {
         animationDelay: `${110 + index * 50}ms`
       }}
     >
-      <div className="relative overflow-hidden h-[170px] md:h-[200px]">
-        <img 
-          src={image} 
-          alt={title} 
+      <motion.div
+        className="relative overflow-hidden h-[170px] md:h-[200px]"
+        whileHover={{ scale: 1.1 }}  // Smooth scaling effect on hover
+        transition={{ duration: 0.3 }}
+      >
+        <img
+          src={image}
+          alt={title}
           loading="lazy"
           decoding="async"
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-80 transition-opacity duration-300"></div>
         <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-8 group-hover:translate-y-1 transition-transform duration-400 ease-[cubic-bezier(0.4,0,0.2,1)]">
-          <Button variant="outline" size="sm" className="bg-white/90 text-tech-blue-900 hover:bg-tech-blue-500 hover:text-white font-semibold shadow backdrop-blur">
+          <Button
+            variant="outline"
+            size="sm"
+            className="bg-white/90 text-tech-blue-900 hover:bg-tech-blue-500 hover:text-white font-semibold shadow backdrop-blur"
+          >
             <a href="#contact" className="transition-all">Get In Touch</a>
           </Button>
         </div>
-      </div>
+      </motion.div>
       <div className="p-4 bg-white bg-opacity-90 backdrop-blur rounded-b-xl flex flex-col gap-1 z-10">
         <p className="text-xs text-tech-blue-400 font-semibold tracking-wide">{category}</p>
         <h3 className="text-base font-bold text-tech-blue-900 group-hover:text-tech-blue-600 transition-colors duration-300">
           {title}
         </h3>
       </div>
-      <div className="absolute -z-10 inset-0 pointer-events-none group-hover:blur-[1px]" style={{
-        background: "radial-gradient(600px circle at 60% 80%, rgba(0,96,182,0.07) 0%, transparent 100%)"
-      }}/>
+      <div
+        className="absolute -z-10 inset-0 pointer-events-none group-hover:blur-[1px]"
+        style={{
+          background: "radial-gradient(600px circle at 60% 80%, rgba(0,96,182,0.07) 0%, transparent 100%)"
+        }}
+      />
     </Card>
   );
 };
@@ -87,10 +97,10 @@ const LatestProjects = () => {
       image: "/lovable-uploads/banking.jpg",
       title: "Banking Domain",
       category: "Web Development"
-    },    
+    },
     {
       image: "/lovable-uploads/lowyer.jpeg",
-      title: "Lowyers Diary ",
+      title: "Lowyers Diary",
       category: "Web Development"
     },
     {
@@ -148,9 +158,8 @@ const LatestProjects = () => {
         </div>
 
         <div className="relative max-w-7xl mx-auto md:px-0">
-          <Swiper 
+          <Swiper
             modules={[Autoplay, Grid, EffectCreative]}
-            // Show 4 cards per view (2 rows) on desktop, fallback to 1 card per view on mobile
             slidesPerView={1}
             grid={{ rows: 1, fill: "row" }}
             spaceBetween={24}
@@ -179,14 +188,18 @@ const LatestProjects = () => {
                 grid: { rows: 2, fill: "row" },
                 spaceBetween: 20,
               },
-              1024: {
-                slidesPerView: 4,
-                grid: { rows: 2, fill: "row" },
+              768: {
+                slidesPerView: 3,
+                grid: { rows: 1, fill: "row" },
                 spaceBetween: 30,
+              },
+              1024: {
+                slidesPerView: 2,
+                grid: { rows: 1, fill: "row" },
+                spaceBetween: 100,
               }
             }}
-            className="rounded-2xl shadow-xl mx-0"
-            style={{ minHeight: 420 }}
+            className="rounded-2xl shadow-xl mx-2"
           >
             {projects.map((project, idx) => (
               <SwiperSlide key={idx} className="pt-3 pb-5">
@@ -206,4 +219,3 @@ const LatestProjects = () => {
 };
 
 export default LatestProjects;
-
