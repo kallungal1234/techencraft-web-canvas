@@ -17,8 +17,8 @@ const HeroSection = () => {
       {/* Background video */}
       <video
         className="absolute inset-0 w-full h-full object-cover"
-        src="/lovable-uploads/banner.mp4"
-        poster="/lovable-uploads/banner_poster.jpg"
+        src="/lovable-uploads/banner_new.mp4"
+        poster="/lovable-uploads/thumbnail.jpg"
         autoPlay
         loop
         muted
@@ -56,7 +56,7 @@ const HeroSection = () => {
               isVisible ? "opacity-100 animate-fade-in" : "opacity-0"
             )}
           >
-            We build high-quality web and mobile solutions for real-world business needs — from healthcare and logistics to e-learning and loyalty management.
+            We build high-quality web and mobile solutions for real-world business needs from healthcare and logistics to e-learning and loyalty management.
           </p>
 
           <div
