@@ -4,16 +4,13 @@ import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
-// Import Swiper React components
+// Fix: Import Swiper modules in lowercase
 import { Swiper, SwiperSlide } from "swiper/react";
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/grid";
 import "swiper/css/effect-creative";
-// Import required modules
 import { Autoplay, Grid, EffectCreative } from "swiper/modules";
 
-// Animation utility
 const glideAnimations = [
   "animate-fade-in",
   "animate-fade-in-right",
@@ -150,15 +147,13 @@ const LatestProjects = () => {
           </p>
         </div>
 
-        <div className="relative max-w-5xl mx-auto md:px-0">
+        <div className="relative max-w-7xl mx-auto md:px-0">
           <Swiper 
             modules={[Autoplay, Grid, EffectCreative]}
-            slidesPerView={2}
-            grid={{
-              rows: 2,
-              fill: "row"
-            }}
-            spaceBetween={30}
+            // Show 4 cards per view (2 rows) on desktop, fallback to 1 card per view on mobile
+            slidesPerView={1}
+            grid={{ rows: 1, fill: "row" }}
+            spaceBetween={24}
             autoplay={{
               delay: 2800,
               disableOnInteraction: false
@@ -176,6 +171,18 @@ const LatestProjects = () => {
                 opacity: 0,
                 translate: ["60%", 0, 0],
                 scale: 0.92
+              }
+            }}
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+                grid: { rows: 2, fill: "row" },
+                spaceBetween: 20,
+              },
+              1024: {
+                slidesPerView: 4,
+                grid: { rows: 2, fill: "row" },
+                spaceBetween: 30,
               }
             }}
             className="rounded-2xl shadow-xl mx-0"
@@ -199,3 +206,4 @@ const LatestProjects = () => {
 };
 
 export default LatestProjects;
+
