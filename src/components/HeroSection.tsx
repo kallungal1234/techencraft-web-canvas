@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
@@ -6,87 +7,126 @@ import { cn } from "@/lib/utils";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 const HeroSection = () => {
+  // Memoize video URLs to prevent recreating array on each render
   const videos = useMemo(() => [
     "/lovable-uploads/banner_new.mp4",
     "/lovable-uploads/banner_7.mp4"
   ], []);
 
+  // State management
   const [activeIndex, setActiveIndex] = useState(0);
   const [fadeIn, setFadeIn] = useState(true);
   const [videoLoaded, setVideoLoaded] = useState([false, false]);
   const [isVisible, setIsVisible] = useState(false);
   const [inView, setInView] = useState(false);
-
-  const videoRefs = [useRef<HTMLVideoElement | null>(null), useRef<HTMLVideoElement | null>(null)];
+  
+  // Refs for DOM elements
+  const videoRefs = useMemo(() => [
+    useRef<HTMLVideoElement | null>(null), 
+    useRef<HTMLVideoElement | null>(null)
+  ], []);
+  
   const sectionRef = useRef<HTMLElement | null>(null);
-
+  
+  // Setup scroll animation
   const { scrollY } = useScroll();
   const yOffset = useTransform(scrollY, [0, 400], [0, -50]);
 
-  // Intersection observer to detect section in view
+  // Lazy load videos when section comes into view
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0.3 }
+      ([entry]) => {
+        const isIntersecting = entry.isIntersecting;
+        setInView(isIntersecting);
+        
+        // Start playing the active video when in view
+        if (isIntersecting && videoRefs[activeIndex].current) {
+          // Use low priority to avoid blocking main thread
+          setTimeout(() => {
+            videoRefs[activeIndex].current?.play().catch(() => {});
+          }, 0);
+        }
+      },
+      { threshold: 0.1, rootMargin: "100px" }
     );
+    
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
-  }, []);
+  }, [activeIndex, videoRefs]);
 
+  // Animation visibility setup
   useEffect(() => {
-    requestAnimationFrame(() => setIsVisible(true));
+    // Use requestIdleCallback or setTimeout for non-critical UI initialization
+    const id = requestAnimationFrame(() => setIsVisible(true));
+    return () => cancelAnimationFrame(id);
   }, []);
 
+  // Handle video loaded event with debounce effect
   const handleVideoLoaded = useCallback((index: number) => {
     setVideoLoaded((prev) => {
       const updated = [...prev];
       updated[index] = true;
       return updated;
     });
+    
+    // Only autoplay video when it's in view
     if (inView) videoRefs[index].current?.play().catch(() => {});
-  }, [inView]);
+  }, [inView, videoRefs]);
 
+  // Handle transition between videos
   const handleTransition = useCallback(() => {
     const nextIndex = (activeIndex + 1) % videos.length;
 
-    // Start loading next video
+    // Start transition
     setFadeIn(false);
-    videoRefs[nextIndex].current?.load();
+    
+    // Preload the next video
+    if (videoRefs[nextIndex].current) {
+      videoRefs[nextIndex].current.load();
+    }
 
+    // Schedule the actual switch after fade out completes
     setTimeout(() => {
       setActiveIndex(nextIndex);
       setFadeIn(true);
-    }, 500); // duration of fade
-  }, [activeIndex, videos.length]);
+    }, 500);
+  }, [activeIndex, videos.length, videoRefs]);
 
+  // Set up video rotation
   useEffect(() => {
+    // Only start rotation when in view and video is loaded
+    if (!inView || !videoLoaded[activeIndex]) return;
+    
     const interval = setInterval(handleTransition, 15000);
     return () => clearInterval(interval);
-  }, [handleTransition]);
+  }, [handleTransition, inView, videoLoaded, activeIndex]);
 
   return (
     <section
       ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Fallback Thumbnail */}
+      {/* Static thumbnail as placeholder until video loads */}
       {!videoLoaded.includes(true) && (
         <img
           src="/lovable-uploads/thumbnail.jpg"
           alt="Thumbnail"
+          width="1920"
+          height="1080"
           loading="eager"
+          fetchPriority="high"
           className="absolute inset-0 w-full h-full object-cover blur-md scale-105 z-0"
         />
       )}
 
-      {/* Spinner */}
+      {/* Loading spinner */}
       {!videoLoaded.includes(true) && (
         <div className="absolute inset-0 flex items-center justify-center z-20">
           <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin" />
         </div>
       )}
 
-      {/* Dual Video Layered Background */}
+      {/* Dual video background with lazy loading */}
       {videos.map((src, index) => (
         <video
           key={src}
@@ -102,16 +142,16 @@ const HeroSection = () => {
               : "opacity-100 z-10"
           )}
           src={src}
-          autoPlay
+          preload={index === activeIndex ? "auto" : "none"}
           muted
           playsInline
-          preload="auto"
-          onLoadedData={() => handleVideoLoaded(index)}
+          loop={false}
           onEnded={handleTransition}
+          onLoadedData={() => handleVideoLoaded(index)}
         />
       ))}
 
-      {/* Overlay Content with Parallax */}
+      {/* Content with parallax effect */}
       <motion.div
         style={{ y: yOffset }}
         className="container mx-auto px-4 md:px-6 pt-24 pb-12 relative z-30"
