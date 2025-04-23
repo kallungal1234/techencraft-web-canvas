@@ -1,24 +1,27 @@
 "use client";
 
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const HeroSection = () => {
   const videoSrc = "/lovable-uploads/banner_8.mp4";
+  const posterSrc = "/lovable-uploads/banner_7_thumbnail.jpg"; // ✅ Use your optimized poster
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [inView, setInView] = useState(false);
 
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const sectionRef = useRef<HTMLElement | null>(null);
-
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
+      ([entry]) => {
+        setInView(entry.isIntersecting);
+      },
       { threshold: 0.3 }
     );
+
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
@@ -27,10 +30,9 @@ const HeroSection = () => {
     requestAnimationFrame(() => setIsVisible(true));
   }, []);
 
-  const handleVideoLoaded = useCallback(() => {
-    setVideoLoaded(true);
-    if (inView) {
-      videoRef.current?.play().catch(() => {});
+  useEffect(() => {
+    if (inView && videoRef.current) {
+      videoRef.current.play().catch(() => {});
     }
   }, [inView]);
 
@@ -39,34 +41,7 @@ const HeroSection = () => {
       ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
     >
-      {/* Placeholder Video while loading */}
-      {!videoLoaded && (
-        <video
-          ref={videoRef}
-          className={cn(
-            "absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-10 pointer-events-none",
-            videoLoaded ? "opacity-100" : "opacity-0"
-          )}
-          src={videoSrc}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          onLoadedData={handleVideoLoaded}
-        />
-
-
-      )}
-
-      {/* Spinner */}
-      {!videoLoaded && (
-        <div className="absolute inset-0 flex items-center justify-center z-20">
-          <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin" />
-        </div>
-      )}
-
-      {/* Main Looping Video */}
+      {/* Optimized Main Video */}
       <video
         ref={videoRef}
         className={cn(
@@ -74,13 +49,21 @@ const HeroSection = () => {
           videoLoaded ? "opacity-100" : "opacity-0"
         )}
         src={videoSrc}
+        poster={posterSrc}
         autoPlay
         muted
-        loop // ✅ Make sure it's here
+        loop
         playsInline
-        preload="auto"
-        onLoadedData={handleVideoLoaded}
+        preload="none"
+        onLoadedData={() => setVideoLoaded(true)}
       />
+
+      {/* Spinner while loading */}
+      {!videoLoaded && (
+        <div className="absolute inset-0 flex items-center justify-center z-20">
+          <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin" />
+        </div>
+      )}
 
       {/* Overlay Content */}
       <div className="container mx-auto px-4 md:px-6 pt-24 pb-12 relative z-30">
