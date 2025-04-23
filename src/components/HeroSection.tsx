@@ -7,71 +7,32 @@ import { cn } from "@/lib/utils";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 const HeroSection = () => {
-  // React Hook Rules: All hooks must be called at the top level
+  // First declare all hooks at the top level in consistent order
   const [activeIndex, setActiveIndex] = useState(0);
   const [fadeIn, setFadeIn] = useState(true);
   const [videoLoaded, setVideoLoaded] = useState([false, false]);
   const [isVisible, setIsVisible] = useState(false);
   const [inView, setInView] = useState(false);
   
-  // Setup scroll animation - moved to top level
+  // Setup scroll animation
   const { scrollY } = useScroll();
   const yOffset = useTransform(scrollY, [0, 400], [0, -50]);
   
-  // Refs for DOM elements
+  // Define all refs
   const sectionRef = useRef<HTMLElement | null>(null);
-
-  // Memoize video URLs to prevent recreating array on each render
+  
+  // Memoize stable values
   const videos = useMemo(() => [
     "/lovable-uploads/banner_new.mp4",
     "/lovable-uploads/banner_7.mp4"
   ], []);
   
-  // Create refs for videos - ensure this is a stable reference
-  const videoRefs = useMemo(() => [
-    useRef<HTMLVideoElement | null>(null), 
-    useRef<HTMLVideoElement | null>(null)
-  ], []);
+  // Create refs for videos - using an array of refs
+  const videoRef1 = useRef<HTMLVideoElement | null>(null);
+  const videoRef2 = useRef<HTMLVideoElement | null>(null);
+  const videoRefs = useMemo(() => [videoRef1, videoRef2], []);
   
-  // Lazy load videos when section comes into view
-  useEffect(() => {
-    // Guard against undefined references
-    if (!sectionRef.current || !videoRefs || !Array.isArray(videoRefs)) return;
-    
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const isIntersecting = entry.isIntersecting;
-        setInView(isIntersecting);
-        
-        // Start playing the active video when in view
-        if (isIntersecting && videoRefs[activeIndex]?.current) {
-          // Use low priority to avoid blocking main thread
-          setTimeout(() => {
-            if (videoRefs[activeIndex]?.current) {
-              videoRefs[activeIndex].current?.play().catch(() => {});
-            }
-          }, 0);
-        }
-      },
-      { threshold: 0.1, rootMargin: "100px" }
-    );
-    
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => {
-      if (observer && sectionRef.current) {
-        observer.disconnect();
-      }
-    };
-  }, [activeIndex, videoRefs]);
-
-  // Animation visibility setup
-  useEffect(() => {
-    // Use requestAnimationFrame for non-critical UI initialization
-    const id = requestAnimationFrame(() => setIsVisible(true));
-    return () => cancelAnimationFrame(id);
-  }, []);
-
-  // Handle video loaded event with debounce effect
+  // Handle video loaded event
   const handleVideoLoaded = useCallback((index: number) => {
     setVideoLoaded((prev) => {
       const updated = [...prev];
@@ -79,39 +40,71 @@ const HeroSection = () => {
       return updated;
     });
     
-    // Only autoplay video when it's in view
-    if (inView && videoRefs && videoRefs[index]?.current) {
-      videoRefs[index].current?.play().catch(() => {});
+    if (inView && videoRefs && videoRefs[index] && videoRefs[index].current) {
+      videoRefs[index].current.play().catch(() => {});
     }
   }, [inView, videoRefs]);
 
   // Handle transition between videos
   const handleTransition = useCallback(() => {
-    if (!videos || !Array.isArray(videos) || videos.length === 0) return; // Guard against undefined videos
-    if (!videoRefs || !Array.isArray(videoRefs)) return; // Guard against undefined refs
+    if (!videos || !Array.isArray(videos) || videos.length === 0) return;
+    if (!videoRefs || !Array.isArray(videoRefs)) return;
     
     const nextIndex = (activeIndex + 1) % videos.length;
 
-    // Start transition
     setFadeIn(false);
     
-    // Preload the next video
-    if (videoRefs[nextIndex]?.current) {
+    if (videoRefs[nextIndex] && videoRefs[nextIndex].current) {
       videoRefs[nextIndex].current.load();
     }
 
-    // Schedule the actual switch after fade out completes
     setTimeout(() => {
       setActiveIndex(nextIndex);
       setFadeIn(true);
     }, 500);
   }, [activeIndex, videos, videoRefs]);
 
-  // Set up video rotation
+  // Animation visibility setup
   useEffect(() => {
-    // Guard against undefined or incomplete dependencies
-    if (!inView || !Array.isArray(videoLoaded) || !videoLoaded[activeIndex] || 
-        !Array.isArray(videos) || videos.length === 0) return;
+    const id = requestAnimationFrame(() => setIsVisible(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+  
+  // Intersection observer effect
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const isIntersecting = entry.isIntersecting;
+        setInView(isIntersecting);
+        
+        if (isIntersecting && videoRefs && videoRefs[activeIndex] && videoRefs[activeIndex].current) {
+          setTimeout(() => {
+            if (videoRefs[activeIndex] && videoRefs[activeIndex].current) {
+              videoRefs[activeIndex].current.play().catch(() => {});
+            }
+          }, 0);
+        }
+      },
+      { threshold: 0.1, rootMargin: "100px" }
+    );
+    
+    observer.observe(sectionRef.current);
+    
+    return () => {
+      if (sectionRef.current) {
+        observer.disconnect();
+      }
+    };
+  }, [activeIndex, videoRefs]);
+
+  // Video rotation effect
+  useEffect(() => {
+    if (!inView) return;
+    if (!Array.isArray(videoLoaded) || videoLoaded.length === 0) return;
+    if (!videoLoaded[activeIndex]) return;
+    if (!Array.isArray(videos) || videos.length === 0) return;
     
     const interval = setInterval(handleTransition, 15000);
     return () => clearInterval(interval);
