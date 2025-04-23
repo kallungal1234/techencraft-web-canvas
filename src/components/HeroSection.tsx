@@ -1,186 +1,134 @@
-
 "use client";
 
 import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { motion, useScroll, useTransform } from "framer-motion";
 
 const HeroSection = () => {
-  // First declare all hooks at the top level in consistent order
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [fadeIn, setFadeIn] = useState(true);
-  const [videoLoaded, setVideoLoaded] = useState([false, false]);
-  const [isVisible, setIsVisible] = useState(false);
-  const [inView, setInView] = useState(false);
-  
-  // Setup scroll animation
-  const { scrollY } = useScroll();
-  const yOffset = useTransform(scrollY, [0, 400], [0, -50]);
-  
-  // Define all refs
-  const sectionRef = useRef<HTMLElement | null>(null);
-  
-  // Memoize stable values
   const videos = useMemo(() => [
     "/lovable-uploads/banner_new.mp4",
-    "/lovable-uploads/banner_7.mp4"
+    "/lovable-uploads/banner_5.mp4"
   ], []);
-  
-  // Create refs for videos - using an array of refs
-  const videoRef1 = useRef<HTMLVideoElement | null>(null);
-  const videoRef2 = useRef<HTMLVideoElement | null>(null);
-  const videoRefs = useMemo(() => [videoRef1, videoRef2], []);
-  
-  // Handle video loaded event
-  const handleVideoLoaded = useCallback((index: number) => {
-    setVideoLoaded((prev) => {
-      const updated = [...prev];
-      updated[index] = true;
-      return updated;
-    });
-    
-    if (inView && videoRefs && videoRefs[index] && videoRefs[index].current) {
-      videoRefs[index].current.play().catch(() => {});
-    }
-  }, [inView, videoRefs]);
 
-  // Handle transition between videos
-  const handleTransition = useCallback(() => {
-    if (!videos || !Array.isArray(videos) || videos.length === 0) return;
-    if (!videoRefs || !Array.isArray(videoRefs)) return;
-    
-    const nextIndex = (activeIndex + 1) % videos.length;
+  const [currentVideo, setCurrentVideo] = useState(0);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [inView, setInView] = useState(false);
 
-    setFadeIn(false);
-    
-    if (videoRefs[nextIndex] && videoRefs[nextIndex].current) {
-      videoRefs[nextIndex].current.load();
-    }
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
-    setTimeout(() => {
-      setActiveIndex(nextIndex);
-      setFadeIn(true);
-    }, 500);
-  }, [activeIndex, videos, videoRefs]);
-
-  // Animation visibility setup
+  // Handle intersection (play video only when in view)
   useEffect(() => {
-    const id = requestAnimationFrame(() => setIsVisible(true));
-    return () => cancelAnimationFrame(id);
-  }, []);
-  
-  // Intersection observer effect
-  useEffect(() => {
-    if (!sectionRef.current) return;
-    
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        const isIntersecting = entry.isIntersecting;
-        setInView(isIntersecting);
-        
-        if (isIntersecting && videoRefs && videoRefs[activeIndex] && videoRefs[activeIndex].current) {
-          setTimeout(() => {
-            if (videoRefs[activeIndex] && videoRefs[activeIndex].current) {
-              videoRefs[activeIndex].current.play().catch(() => {});
-            }
-          }, 0);
-        }
-      },
-      { threshold: 0.1, rootMargin: "100px" }
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.3 }
     );
-    
-    observer.observe(sectionRef.current);
-    
-    return () => {
-      if (sectionRef.current) {
-        observer.disconnect();
-      }
-    };
-  }, [activeIndex, videoRefs]);
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
 
-  // Video rotation effect
+  // Fade in overlay content
   useEffect(() => {
-    if (!inView) return;
-    if (!Array.isArray(videoLoaded) || videoLoaded.length === 0) return;
-    if (!videoLoaded[activeIndex]) return;
-    if (!Array.isArray(videos) || videos.length === 0) return;
-    
-    const interval = setInterval(handleTransition, 15000);
-    return () => clearInterval(interval);
-  }, [handleTransition, inView, videoLoaded, activeIndex, videos]);
+    requestAnimationFrame(() => setIsVisible(true));
+  }, []);
+
+  const handleVideoLoaded = useCallback(() => {
+    setVideoLoaded(true);
+    if (inView) videoRef.current?.play().catch(() => {});
+  }, [inView]);
+
+  const handleVideoEnd = useCallback(() => {
+    setVideoLoaded(false);
+    setCurrentVideo((prev) => (prev + 1) % videos.length);
+  }, [videos.length]);
+
+  // Reload video when currentVideo changes
+  useEffect(() => {
+    videoRef.current?.load();
+  }, [currentVideo]);
 
   return (
     <section
       ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Static thumbnail as placeholder until video loads */}
-      {!videoLoaded.includes(true) && (
+      {/* Thumbnail Placeholder */}
+      {!videoLoaded && (
         <img
           src="/lovable-uploads/thumbnail.jpg"
-          alt="Thumbnail"
-          width="1920"
-          height="1080"
+          alt="Video Thumbnail"
           loading="eager"
-          className="absolute inset-0 w-full h-full object-cover blur-md scale-105 z-0"
+          className="absolute inset-0 w-full h-full object-cover blur-md scale-105 z-0 transition-opacity duration-500"
         />
       )}
 
-      {/* Loading spinner */}
-      {!videoLoaded.includes(true) && (
+      {/* Spinner while loading */}
+      {!videoLoaded && (
         <div className="absolute inset-0 flex items-center justify-center z-20">
           <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin" />
         </div>
       )}
 
-      {/* Dual video background with lazy loading */}
-      {videos && videos.map((src, index) => (
-        <video
-          key={src}
-          ref={videoRefs[index]}
-          className={cn(
-            "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000",
-            index === activeIndex
-              ? fadeIn
-                ? "opacity-100 z-10"
-                : "opacity-0 z-20"
-              : fadeIn
-              ? "opacity-0 z-20"
-              : "opacity-100 z-10"
-          )}
-          src={src}
-          preload={index === activeIndex ? "auto" : "none"}
-          muted
-          playsInline
-          loop={false}
-          onEnded={handleTransition}
-          onLoadedData={() => handleVideoLoaded(index)}
-        />
-      ))}
+      {/* Video Background */}
+      <video
+        ref={videoRef}
+        key={videos[currentVideo]}
+        className={cn(
+          "absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-10",
+          videoLoaded ? "opacity-100" : "opacity-0"
+        )}
+        src={videos[currentVideo]}
+        autoPlay
+        muted
+        playsInline
+        preload="auto"
+        onLoadedData={handleVideoLoaded}
+        onEnded={handleVideoEnd}
+      />
 
-      {/* Content with parallax effect */}
-      <motion.div
-        style={{ y: yOffset }}
-        className="container mx-auto px-4 md:px-6 pt-24 pb-12 relative z-30"
-      >
+      {/* Overlay Content */}
+      <div className="container mx-auto px-4 md:px-6 pt-24 pb-12 relative z-30">
         <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
-          <h1 className={cn("text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white", isVisible && "animate-fade-in")}>
+          <h1
+            className={cn(
+              "text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white transition-opacity duration-700 ease-out",
+              isVisible ? "opacity-100 animate-fade-in" : "opacity-0"
+            )}
+          >
             <span className="text-gradient">Techencraft</span>
           </h1>
-          <h2 className={cn("text-2xl md:text-3xl lg:text-4xl font-semibold mt-4 text-white", isVisible && "animate-fade-in delay-100")}>
+
+          <h2
+            className={cn(
+              "text-2xl md:text-3xl lg:text-4xl font-semibold mt-4 text-white transition-opacity duration-700 delay-200 ease-out",
+              isVisible ? "opacity-100 animate-fade-in" : "opacity-0"
+            )}
+          >
             Crafting Ideas for the Future of AI Technologies
           </h2>
-          <p className={cn("mt-6 text-lg md:text-xl text-gray-200 max-w-3xl", isVisible && "animate-fade-in delay-200")}>
+
+          <p
+            className={cn(
+              "mt-6 text-lg md:text-xl text-gray-200 max-w-3xl transition-opacity duration-700 delay-300 ease-out",
+              isVisible ? "opacity-100 animate-fade-in" : "opacity-0"
+            )}
+          >
             We build high-quality web and mobile solutions for real-world business needs from healthcare and logistics to e-learning and loyalty management.
           </p>
-          <div className={cn("flex flex-col sm:flex-row items-center gap-4 mt-10", isVisible && "animate-fade-in delay-300")}>
+
+          <div
+            className={cn(
+              "flex flex-col sm:flex-row items-center gap-4 mt-10 transition-opacity duration-700 delay-500 ease-out",
+              isVisible ? "opacity-100 animate-fade-in" : "opacity-0"
+            )}
+          >
             <Button size="lg" className="button-gradient">
               <a href="#about">Get Started</a>
             </Button>
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };
