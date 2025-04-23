@@ -42,13 +42,20 @@ const HeroSection = () => {
       {/* Placeholder Video while loading */}
       {!videoLoaded && (
         <video
+          ref={videoRef}
+          className={cn(
+            "absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-10 pointer-events-none", // 👈 Added here
+            videoLoaded ? "opacity-100" : "opacity-0"
+          )}
           src={videoSrc}
           autoPlay
           muted
-          playsInline
           loop
-          className="absolute inset-0 w-full h-full object-cover blur-md scale-105 z-0 transition-opacity duration-500"
+          playsInline
+          preload="auto"
+          onLoadedData={handleVideoLoaded}
         />
+
       )}
 
       {/* Spinner */}
