@@ -8,7 +8,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 const HeroSection = () => {
   const videos = useMemo(() => [
     "/lovable-uploads/banner_new.mp4",
-    "/lovable-uploads/banner_5.mp4"
+    "/lovable-uploads/banner_7.mp4"
   ], []);
 
   const [activeIndex, setActiveIndex] = useState(0);
