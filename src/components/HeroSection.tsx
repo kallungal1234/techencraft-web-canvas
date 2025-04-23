@@ -1,16 +1,12 @@
 "use client";
 
-import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const HeroSection = () => {
-  const videos = useMemo(() => [
-    "/lovable-uploads/banner_new.mp4",
-    "/lovable-uploads/banner_5.mp4"
-  ], []);
+  const videoSrc = "/lovable-uploads/banner_8.mp4";
 
-  const [currentVideo, setCurrentVideo] = useState(0);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [inView, setInView] = useState(false);
@@ -18,7 +14,6 @@ const HeroSection = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
 
-  // Handle intersection (play video only when in view)
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => setInView(entry.isIntersecting),
@@ -28,63 +23,55 @@ const HeroSection = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Fade in overlay content
   useEffect(() => {
     requestAnimationFrame(() => setIsVisible(true));
   }, []);
 
   const handleVideoLoaded = useCallback(() => {
     setVideoLoaded(true);
-    if (inView) videoRef.current?.play().catch(() => {});
+    if (inView) {
+      videoRef.current?.play().catch(() => {});
+    }
   }, [inView]);
-
-  const handleVideoEnd = useCallback(() => {
-    setVideoLoaded(false);
-    setCurrentVideo((prev) => (prev + 1) % videos.length);
-  }, [videos.length]);
-
-  // Reload video when currentVideo changes
-  useEffect(() => {
-    videoRef.current?.load();
-  }, [currentVideo]);
 
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
     >
-      {/* Thumbnail Placeholder */}
+      {/* Placeholder Video while loading */}
       {!videoLoaded && (
-        <img
-          src="/lovable-uploads/thumbnail.jpg"
-          alt="Video Thumbnail"
-          loading="eager"
+        <video
+          src={videoSrc}
+          autoPlay
+          muted
+          playsInline
+          loop
           className="absolute inset-0 w-full h-full object-cover blur-md scale-105 z-0 transition-opacity duration-500"
         />
       )}
 
-      {/* Spinner while loading */}
+      {/* Spinner */}
       {!videoLoaded && (
         <div className="absolute inset-0 flex items-center justify-center z-20">
           <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin" />
         </div>
       )}
 
-      {/* Video Background */}
+      {/* Main Looping Video */}
       <video
         ref={videoRef}
-        key={videos[currentVideo]}
         className={cn(
           "absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-10",
           videoLoaded ? "opacity-100" : "opacity-0"
         )}
-        src={videos[currentVideo]}
+        src={videoSrc}
         autoPlay
         muted
+        loop // ✅ Make sure it's here
         playsInline
         preload="auto"
         onLoadedData={handleVideoLoaded}
-        onEnded={handleVideoEnd}
       />
 
       {/* Overlay Content */}
