@@ -7,43 +7,47 @@ import { cn } from "@/lib/utils";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 const HeroSection = () => {
-  // Setup scroll animation first to fix hook ordering
-  const { scrollY } = useScroll();
-  const yOffset = useTransform(scrollY, [0, 400], [0, -50]);
-  
-  // Memoize video URLs to prevent recreating array on each render
-  const videos = useMemo(() => [
-    "/lovable-uploads/banner_new.mp4",
-    "/lovable-uploads/banner_7.mp4"
-  ], []);
-
-  // State management
+  // React Hook Rules: All hooks must be called at the top level
   const [activeIndex, setActiveIndex] = useState(0);
   const [fadeIn, setFadeIn] = useState(true);
   const [videoLoaded, setVideoLoaded] = useState([false, false]);
   const [isVisible, setIsVisible] = useState(false);
   const [inView, setInView] = useState(false);
   
+  // Setup scroll animation - moved to top level
+  const { scrollY } = useScroll();
+  const yOffset = useTransform(scrollY, [0, 400], [0, -50]);
+  
   // Refs for DOM elements
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  // Memoize video URLs to prevent recreating array on each render
+  const videos = useMemo(() => [
+    "/lovable-uploads/banner_new.mp4",
+    "/lovable-uploads/banner_7.mp4"
+  ], []);
+  
+  // Create refs for videos - ensure this is a stable reference
   const videoRefs = useMemo(() => [
     useRef<HTMLVideoElement | null>(null), 
     useRef<HTMLVideoElement | null>(null)
   ], []);
   
-  const sectionRef = useRef<HTMLElement | null>(null);
-  
   // Lazy load videos when section comes into view
   useEffect(() => {
+    // Guard against undefined references
+    if (!sectionRef.current || !videoRefs || !Array.isArray(videoRefs)) return;
+    
     const observer = new IntersectionObserver(
       ([entry]) => {
         const isIntersecting = entry.isIntersecting;
         setInView(isIntersecting);
         
         // Start playing the active video when in view
-        if (isIntersecting && videoRefs[activeIndex].current) {
+        if (isIntersecting && videoRefs[activeIndex]?.current) {
           // Use low priority to avoid blocking main thread
           setTimeout(() => {
-            if (videoRefs[activeIndex].current) {
+            if (videoRefs[activeIndex]?.current) {
               videoRefs[activeIndex].current?.play().catch(() => {});
             }
           }, 0);
@@ -62,7 +66,7 @@ const HeroSection = () => {
 
   // Animation visibility setup
   useEffect(() => {
-    // Use requestIdleCallback or setTimeout for non-critical UI initialization
+    // Use requestAnimationFrame for non-critical UI initialization
     const id = requestAnimationFrame(() => setIsVisible(true));
     return () => cancelAnimationFrame(id);
   }, []);
@@ -76,14 +80,15 @@ const HeroSection = () => {
     });
     
     // Only autoplay video when it's in view
-    if (inView && videoRefs[index].current) {
+    if (inView && videoRefs && videoRefs[index]?.current) {
       videoRefs[index].current?.play().catch(() => {});
     }
   }, [inView, videoRefs]);
 
   // Handle transition between videos
   const handleTransition = useCallback(() => {
-    if (!videos || videos.length === 0) return; // Guard against undefined videos
+    if (!videos || !Array.isArray(videos) || videos.length === 0) return; // Guard against undefined videos
+    if (!videoRefs || !Array.isArray(videoRefs)) return; // Guard against undefined refs
     
     const nextIndex = (activeIndex + 1) % videos.length;
 
@@ -91,7 +96,7 @@ const HeroSection = () => {
     setFadeIn(false);
     
     // Preload the next video
-    if (videoRefs[nextIndex].current) {
+    if (videoRefs[nextIndex]?.current) {
       videoRefs[nextIndex].current.load();
     }
 
@@ -104,12 +109,13 @@ const HeroSection = () => {
 
   // Set up video rotation
   useEffect(() => {
-    // Only start rotation when in view and video is loaded
-    if (!inView || !videoLoaded[activeIndex]) return;
+    // Guard against undefined or incomplete dependencies
+    if (!inView || !Array.isArray(videoLoaded) || !videoLoaded[activeIndex] || 
+        !Array.isArray(videos) || videos.length === 0) return;
     
     const interval = setInterval(handleTransition, 15000);
     return () => clearInterval(interval);
-  }, [handleTransition, inView, videoLoaded, activeIndex]);
+  }, [handleTransition, inView, videoLoaded, activeIndex, videos]);
 
   return (
     <section
@@ -136,7 +142,7 @@ const HeroSection = () => {
       )}
 
       {/* Dual video background with lazy loading */}
-      {videos.map((src, index) => (
+      {videos && videos.map((src, index) => (
         <video
           key={src}
           ref={videoRefs[index]}
