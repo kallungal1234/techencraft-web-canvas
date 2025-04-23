@@ -43,7 +43,9 @@ const HeroSection = () => {
         if (isIntersecting && videoRefs[activeIndex].current) {
           // Use low priority to avoid blocking main thread
           setTimeout(() => {
-            videoRefs[activeIndex].current?.play().catch(() => {});
+            if (videoRefs[activeIndex].current) {
+              videoRefs[activeIndex].current?.play().catch(() => {});
+            }
           }, 0);
         }
       },
@@ -51,7 +53,11 @@ const HeroSection = () => {
     );
     
     if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
+    return () => {
+      if (observer && sectionRef.current) {
+        observer.disconnect();
+      }
+    };
   }, [activeIndex, videoRefs]);
 
   // Animation visibility setup
@@ -70,11 +76,15 @@ const HeroSection = () => {
     });
     
     // Only autoplay video when it's in view
-    if (inView) videoRefs[index].current?.play().catch(() => {});
+    if (inView && videoRefs[index].current) {
+      videoRefs[index].current?.play().catch(() => {});
+    }
   }, [inView, videoRefs]);
 
   // Handle transition between videos
   const handleTransition = useCallback(() => {
+    if (!videos || videos.length === 0) return; // Guard against undefined videos
+    
     const nextIndex = (activeIndex + 1) % videos.length;
 
     // Start transition
@@ -90,7 +100,7 @@ const HeroSection = () => {
       setActiveIndex(nextIndex);
       setFadeIn(true);
     }, 500);
-  }, [activeIndex, videos.length, videoRefs]);
+  }, [activeIndex, videos, videoRefs]);
 
   // Set up video rotation
   useEffect(() => {
