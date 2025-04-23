@@ -1,97 +1,13 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/effect-coverflow';
 import { cn } from '@/lib/utils';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/grid";
-import "swiper/css/effect-creative";
-import { Autoplay, Grid, EffectCreative } from "swiper/modules";
-import { motion } from "framer-motion";  // Integrating Framer Motion for smoother animations
-
-const glideAnimations = [
-  "animate-fade-in",
-  "animate-fade-in-right",
-  "animate-fade-in-left",
-  "animate-scale-in"
-];
-
-interface ProjectCardProps {
-  image: string;
-  title: string;
-  category: string;
-  index: number;
-}
-
-const ProjectCard = ({ image, title, category, index }: ProjectCardProps) => {
-  return (
-    <Card
-      className={cn(
-        "card-hover relative border-none h-full flex flex-col group cursor-pointer overflow-hidden rounded-xl shadow-lg bg-white transition-transform duration-700 hover:shadow-2xl hover:bg-gradient-to-t hover:from-white hover:to-tech-blue-50/70 ring-1 ring-tech-blue-100/70",
-        glideAnimations[index % glideAnimations.length]
-      )}
-      style={{
-        animationDelay: `${110 + index * 50}ms`
-      }}
-    >
-      <motion.div
-        className="relative overflow-hidden h-[170px] md:h-[200px]"
-        whileHover={{ scale: 1.1 }}  // Smooth scaling effect on hover
-        transition={{ duration: 0.3 }}
-      >
-        <img
-          src={image}
-          alt={title}
-          loading="lazy"
-          decoding="async"
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-80 transition-opacity duration-300"></div>
-        <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-8 group-hover:translate-y-1 transition-transform duration-400 ease-[cubic-bezier(0.4,0,0.2,1)]">
-          <Button
-            variant="outline"
-            size="sm"
-            className="bg-white/90 text-tech-blue-900 hover:bg-tech-blue-500 hover:text-white font-semibold shadow backdrop-blur"
-          >
-            <a href="#contact" className="transition-all">Get In Touch</a>
-          </Button>
-        </div>
-      </motion.div>
-      <div className="p-4 bg-white bg-opacity-90 backdrop-blur rounded-b-xl flex flex-col gap-1 z-10">
-        <p className="text-xs text-tech-blue-400 font-semibold tracking-wide">{category}</p>
-        <h3 className="text-base font-bold text-tech-blue-900 group-hover:text-tech-blue-600 transition-colors duration-300">
-          {title}
-        </h3>
-      </div>
-      <div
-        className="absolute -z-10 inset-0 pointer-events-none group-hover:blur-[1px]"
-        style={{
-          background: "radial-gradient(600px circle at 60% 80%, rgba(0,96,182,0.07) 0%, transparent 100%)"
-        }}
-      />
-    </Card>
-  );
-};
 
 const LatestProjects = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new window.IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.07 }
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
   const projects = [
     {
       image: "/lovable-uploads/banking.jpg",
@@ -121,99 +37,86 @@ const LatestProjects = () => {
     {
       image: "/lovable-uploads/mrf.jpeg",
       title: "MRF Tyre Retreading",
-      category: "ERP APPLICATION"
+      category: "ERP Application"
+    },
+    {
+      image: "/lovable-uploads/ecommerce.jpg",
+      title: "E-commerce Platform",
+      category: "Web Development"
+    },
+    {
+      image: "/lovable-uploads/portfolio.jpg",
+      title: "Portfolio Showcase",
+      category: "Design + Dev"
+    },
+    {
+      image: "/lovable-uploads/restaurant.jpg",
+      title: "Restaurant Ordering System",
+      category: "Mobile Development"
+    },
+    {
+      image: "/lovable-uploads/ai-dashboard.jpg",
+      title: "AI Analytics Dashboard",
+      category: "AI/ML"
     }
   ];
 
   return (
-    <section
-      id="projects"
-      ref={sectionRef}
-      className={cn(
-        "py-16 relative overflow-hidden min-h-[670px] bg-gradient-to-b from-[#f6faff] via-white/90 to-[#e5edfa]",
-        isVisible ? "animate-fade-in" : "opacity-0"
-      )}
-      style={{ transition: 'opacity 0.9s cubic-bezier(0.4,0,0.2,1)' }}
-    >
-      {/* Glimmer background effect */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute left-1/3 top-0 w-[480px] h-[180px] bg-gradient-to-tr from-tech-blue-100 via-white/80 to-tech-blue-200 rounded-full blur-2xl opacity-40"></div>
-        <div className="absolute right-0 top-1/2 w-[340px] h-[170px] bg-gradient-to-tr from-pink-100 via-white/60 to-tech-blue-100 rounded-full blur-3xl opacity-30"></div>
-        <div className="absolute left-2/3 top-1/3 w-32 h-32 bg-gradient-to-br from-[#e5edfa80] to-blue-100 rounded-full blur-2xl opacity-70"></div>
-      </div>
-      <div className="relative container mx-auto px-5 md:px-8">
+    <section id="works" className="py-16 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+      <div className="absolute inset-0 code-background opacity-10" />
+      <div className="container mx-auto px-4 md:px-6 relative">
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <h2 className={cn(
-            "text-3xl md:text-4xl font-extrabold text-tech-blue-900 tracking-tight drop-shadow animate-fade-in",
-            isVisible && "glow"
-          )}>
-            Latest Projects
+          <h2 className="text-3xl md:text-4xl font-bold text-tech-blue-900 drop-shadow-lg">
+            Previous Works
           </h2>
-          <div className="w-20 h-1 mt-3 bg-gradient-to-r from-tech-blue-400 to-tech-blue-600 mx-auto rounded-full"></div>
-          <p className={cn(
-            "mt-4 text-lg text-tech-blue-600 font-medium transition-opacity opacity-90"
-          )}>
-            Explore our recent work across various industries and technologies
+          <div className="w-20 h-1 bg-tech-blue-500 mx-auto my-4 rounded-lg" />
+          <p className="mt-4 text-lg text-muted-foreground">
+            Explore our featured projects delivered with precision and creativity.
           </p>
         </div>
 
-        <div className="relative max-w-7xl mx-auto md:px-0">
-          <Swiper
-            modules={[Autoplay, Grid, EffectCreative]}
-            slidesPerView={1}
-            grid={{ rows: 1, fill: "row" }}
-            spaceBetween={24}
-            autoplay={{
-              delay: 2800,
-              disableOnInteraction: false
-            }}
-            loop={true}
-            speed={900}
-            effect="creative"
-            creativeEffect={{
-              prev: {
-                opacity: 0,
-                translate: ["-60%", 0, 0],
-                scale: 0.9
-              },
-              next: {
-                opacity: 0,
-                translate: ["60%", 0, 0],
-                scale: 0.92
-              }
-            }}
-            breakpoints={{
-              640: {
-                slidesPerView: 2,
-                grid: { rows: 2, fill: "row" },
-                spaceBetween: 20,
-              },
-              768: {
-                slidesPerView: 3,
-                grid: { rows: 1, fill: "row" },
-                spaceBetween: 30,
-              },
-              1024: {
-                slidesPerView: 2,
-                grid: { rows: 1, fill: "row" },
-                spaceBetween: 100,
-              }
-            }}
-            className="rounded-2xl shadow-xl mx-2"
-          >
-            {projects.map((project, idx) => (
-              <SwiperSlide key={idx} className="pt-3 pb-5">
-                <ProjectCard
-                  image={project.image}
-                  title={project.title}
-                  category={project.category}
-                  index={idx}
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay, EffectCoverflow]}
+          loop={true}
+          effect="coverflow"
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView="auto"
+          coverflowEffect={{
+            rotate: 30,
+            stretch: 0,
+            depth: 100,
+            modifier: 1,
+            slideShadows: true
+          }}
+          autoplay={{ delay: 3500, disableOnInteraction: false }}
+          pagination={{ clickable: true }}
+          navigation
+          className="pb-12"
+        >
+          {projects.map((project, index) => (
+            <SwiperSlide key={index} className="max-w-xs">
+              <div className="rounded-xl overflow-hidden shadow-md group bg-white hover:shadow-xl transition-shadow duration-300">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
                 />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold text-tech-blue-800 group-hover:text-tech-blue-600 transition-colors duration-300">
+                    {project.title}
+                  </h3>
+                  <p className="text-sm text-gray-500 mt-1">{project.category}</p>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
+
+      <div className="absolute w-80 h-80 bg-gradient-to-br from-tech-blue-100 via-white to-white left-[-100px] top-[-60px] blur-3xl opacity-30 rounded-full pointer-events-none" />
+      <div className="absolute w-96 h-96 bg-gradient-to-r from-sky-100/40 via-white/40 to-tech-blue-100/70 right-[-180px] bottom-0 blur-2xl opacity-40 rounded-full pointer-events-none" />
     </section>
   );
 };
