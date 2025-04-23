@@ -7,6 +7,10 @@ import { cn } from "@/lib/utils";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 const HeroSection = () => {
+  // Setup scroll animation first to fix hook ordering
+  const { scrollY } = useScroll();
+  const yOffset = useTransform(scrollY, [0, 400], [0, -50]);
+  
   // Memoize video URLs to prevent recreating array on each render
   const videos = useMemo(() => [
     "/lovable-uploads/banner_new.mp4",
@@ -28,10 +32,6 @@ const HeroSection = () => {
   
   const sectionRef = useRef<HTMLElement | null>(null);
   
-  // Setup scroll animation
-  const { scrollY } = useScroll();
-  const yOffset = useTransform(scrollY, [0, 400], [0, -50]);
-
   // Lazy load videos when section comes into view
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -114,7 +114,6 @@ const HeroSection = () => {
           width="1920"
           height="1080"
           loading="eager"
-          fetchPriority="high"
           className="absolute inset-0 w-full h-full object-cover blur-md scale-105 z-0"
         />
       )}
