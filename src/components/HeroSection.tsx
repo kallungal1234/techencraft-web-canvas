@@ -44,7 +44,7 @@ const HeroSection = () => {
         <video
           ref={videoRef}
           className={cn(
-            "absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-10 pointer-events-none", // 👈 Added here
+            "absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-10 pointer-events-none",
             videoLoaded ? "opacity-100" : "opacity-0"
           )}
           src={videoSrc}
@@ -55,6 +55,7 @@ const HeroSection = () => {
           preload="auto"
           onLoadedData={handleVideoLoaded}
         />
+
 
       )}
 
