@@ -1,15 +1,60 @@
 "use client";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
+import emailjs from "emailjs-com";
 
 const ContactSection = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: ""
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [responseMessage, setResponseMessage] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const result = await emailjs.send(
+        "service_jfhbkxh", // Replace with your EmailJS service ID
+        "template_2esr5cd", // Replace with your EmailJS template ID
+        formData,
+        "IKGCwUXEv_Ywy3kJn" // Replace with your EmailJS user ID
+      );
+
+      setResponseMessage("Your message has been sent successfully!");
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: ""
+      });
+    } catch (error) {
+      setResponseMessage("Something went wrong, please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section id="contact" className="w-full bg-gray-100 py-20">
       <div className="container mx-auto px-4 grid md:grid-cols-2 gap-10">
-        {/* Info Card with animation */}
+        {/* Info Card */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -60,7 +105,7 @@ const ContactSection = () => {
           </div>
         </motion.div>
 
-        {/* Contact Form with animation */}
+        {/* Contact Form */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -70,21 +115,57 @@ const ContactSection = () => {
         >
           <p className="text-sm text-blue-600 font-medium uppercase mb-2">Get in Touch</p>
           <h3 className="text-2xl font-semibold mb-6">Send a Message</h3>
-          <form className="space-y-5">
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Input placeholder="Name" className="p-3 rounded-md border" />
-              <Input type="email" placeholder="E-Mail" className="p-3 rounded-md border" />
-              <Input type="tel" placeholder="Phone Number" className="p-3 rounded-md border" />
-              <Input placeholder="Subject" className="p-3 rounded-md border" />
+              <Input
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Name"
+                className="p-3 rounded-md border"
+              />
+              <Input
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="E-Mail"
+                className="p-3 rounded-md border"
+              />
+              <Input
+                name="phone"
+                type="tel"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Phone Number"
+                className="p-3 rounded-md border"
+              />
+              <Input
+                name="subject"
+                value={formData.subject}
+                onChange={handleChange}
+                placeholder="Subject"
+                className="p-3 rounded-md border"
+              />
             </div>
             <Textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
               placeholder="Your message here"
               rows={5}
               className="w-full p-3 rounded-md border"
             />
-            <Button className="bg-gradient-to-r from-blue-700 to-blue-500 hover:from-blue-800 hover:to-blue-600 text-white px-6 py-3 rounded-md">
-              Submit Now
+            <Button
+              className="bg-gradient-to-r from-blue-700 to-blue-500 hover:from-blue-800 hover:to-blue-600 text-white px-6 py-3 rounded-md"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? "Sending..." : "Submit Now"}
             </Button>
+            {responseMessage && (
+              <div className="mt-4 text-center text-sm text-green-600">{responseMessage}</div>
+            )}
           </form>
         </motion.div>
       </div>

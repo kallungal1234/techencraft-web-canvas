@@ -38,7 +38,7 @@ const Navbar = () => {
           <img
             src="/lovable-uploads/logo-dark.png"
             alt="Techencraft Logo"
-            className="h-16 md:h-20 transition-all duration-300"
+            className="h-20 md:h-24 transition-all duration-300"
           />
         </a>
 
