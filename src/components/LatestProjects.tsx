@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
+import { Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
 import { motion, AnimatePresence } from 'framer-motion';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -39,7 +39,7 @@ const LatestProjects = () => {
         </div>
 
         <Swiper
-          modules={[Navigation, Pagination, Autoplay, EffectCoverflow]}
+          modules={[Pagination, Autoplay, EffectCoverflow]}
           loop={true}
           effect="coverflow"
           grabCursor={true}
@@ -48,7 +48,6 @@ const LatestProjects = () => {
           coverflowEffect={{ rotate: 30, stretch: 0, depth: 100, modifier: 1, slideShadows: true }}
           autoplay={{ delay: 3500, disableOnInteraction: false }}
           pagination={{ clickable: true }}
-          navigation
           className="pb-12"
         >
           {projects.map((project, index) => (
