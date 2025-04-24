@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -126,7 +125,34 @@ export default {
 				'float': 'float 6s ease-in-out infinite',
 				'pulse-slow': 'pulse-slow 4s ease-in-out infinite',
 				'text-shimmer': 'text-shimmer 3s infinite linear',
-			}
+			},
+      fontSize: {
+        // Base font sizes
+        'xs': '0.75rem',     // Extra small
+        'sm': '0.875rem',    // Small
+        'base': '1rem',      // Base body text
+        'lg': '1.125rem',    // Large body text
+        'xl': '1.25rem',     // Extra large body text
+        
+        // Heading sizes
+        'heading-sm': '1.5rem',    // Small heading
+        'heading-md': '1.875rem',  // Medium heading
+        'heading-lg': '2.25rem',   // Large heading
+        'heading-xl': '3rem',      // Extra large heading
+        'heading-2xl': '3.75rem',  // Hero/display heading
+        
+        // Optional: Fine-tuned responsive sizes
+        'responsive-sm': 'clamp(0.75rem, 2vw, 0.875rem)',
+        'responsive-base': 'clamp(1rem, 2.5vw, 1.125rem)',
+        'responsive-lg': 'clamp(1.125rem, 3vw, 1.25rem)'
+      },
+      lineHeight: {
+        // Consistent line heights
+        'tight': '1.2',
+        'normal': '1.5',
+        'relaxed': '1.7',
+        'loose': '2'
+      }
 		}
 	},
 	plugins: [require("tailwindcss-animate")],

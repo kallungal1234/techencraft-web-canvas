@@ -65,12 +65,11 @@ const HeroSection = () => {
         </div>
       )}
 
-      {/* Overlay Content */}
-      <div className="container mx-auto px-4 md:px-6 pt-24 pb-12 relative z-30">
+      <div className="container mx-auto px-4 md:px-6 relative z-30">
         <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
           <h1
             className={cn(
-              "text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white transition-opacity duration-700 ease-out",
+              "text-heading-2xl tracking-tight text-white transition-opacity duration-700 ease-out",
               isVisible ? "opacity-100 animate-fade-in" : "opacity-0"
             )}
           >
@@ -79,7 +78,7 @@ const HeroSection = () => {
 
           <h2
             className={cn(
-              "text-2xl md:text-3xl lg:text-4xl font-semibold mt-4 text-white transition-opacity duration-700 delay-200 ease-out",
+              "text-heading-lg font-semibold mt-4 text-white transition-opacity duration-700 delay-200 ease-out",
               isVisible ? "opacity-100 animate-fade-in" : "opacity-0"
             )}
           >
@@ -88,7 +87,7 @@ const HeroSection = () => {
 
           <p
             className={cn(
-              "mt-6 text-lg md:text-xl text-gray-200 max-w-3xl transition-opacity duration-700 delay-300 ease-out",
+              "mt-6 text-lg text-gray-200 max-w-3xl transition-opacity duration-700 delay-300 ease-out",
               isVisible ? "opacity-100 animate-fade-in" : "opacity-0"
             )}
           >

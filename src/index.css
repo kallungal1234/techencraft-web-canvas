@@ -1,129 +1,26 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 210 50% 98%;
-    --foreground: 214 60% 15%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 214 60% 15%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 214 60% 15%;
-
-    --primary: 215 100% 36%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 215 100% 36%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 215 100% 36%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 215 100% 36%;
-
-    --radius: 0.5rem;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-
   body {
-    @apply bg-background text-foreground;
-    overflow-x: hidden;
+    @apply text-base leading-normal text-foreground;
   }
 
-  html {
-    scroll-behavior: smooth;
+  h1 {
+    @apply text-heading-2xl font-bold leading-tight;
   }
-}
 
-@layer components {
-  .text-gradient {
-    @apply bg-gradient-to-r from-tech-blue-500 to-tech-blue-400 bg-clip-text text-transparent;
+  h2 {
+    @apply text-heading-lg font-semibold leading-tight;
   }
-  
-  .button-gradient {
-    @apply bg-gradient-to-r from-tech-blue-600 to-tech-blue-500 hover:from-tech-blue-700 hover:to-tech-blue-600 transition-all duration-300;
+
+  h3 {
+    @apply text-heading-md font-semibold leading-normal;
   }
-  
-  .card-hover {
-    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-lg hover:border-tech-blue-300;
-  }
-  
-  .nav-link {
-    @apply relative text-foreground hover:text-tech-blue-500 transition-colors duration-300 after:absolute after:w-0 after:h-0.5 after:bg-tech-blue-500 after:left-0 after:bottom-0 after:transition-all after:duration-300 hover:after:w-full;
-  }
-  
-  .stagger-animate-1 {
-    animation-delay: 100ms;
-  }
-  
-  .stagger-animate-2 {
-    animation-delay: 200ms;
-  }
-  
-  .stagger-animate-3 {
-    animation-delay: 300ms;
-  }
-  
-  .stagger-animate-4 {
-    animation-delay: 400ms;
-  }
-  
-  .stagger-animate-5 {
-    animation-delay: 500ms;
-  }
-  
-  .stagger-animate-6 {
-    animation-delay: 600ms;
-  }
-  
-  /* Particle background */
-  .particles::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: radial-gradient(#0060B620 1px, transparent 1px);
-    background-size: 30px 30px;
-    z-index: -1;
-  }
-  
-  /* Code background */
-  .code-background {
-    background-image: url("data:image/svg+xml,%3Csvg width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='code' patternUnits='userSpaceOnUse' width='150' height='150' patternTransform='scale(0.8) rotate(0)'%3E%3Ctext x='0' y='20' fill='%230060B610' font-family='monospace' font-size='10'%3E%7B%7D const function()%3C/text%3E%3Ctext x='20' y='40' fill='%230060B610' font-family='monospace' font-size='10'%3Eimport React from 'react'%3C/text%3E%3Ctext x='0' y='60' fill='%230060B610' font-family='monospace' font-size='10'%3Ereturn ()%3C/text%3E%3Ctext x='15' y='80' fill='%230060B610' font-family='monospace' font-size='10'%3E%3C/div%3E%3C/text%3E%3Ctext x='0' y='100' fill='%230060B610' font-family='monospace' font-size='10'%3Eexport async function%3C/text%3E%3Ctext x='20' y='120' fill='%230060B610' font-family='monospace' font-size='10'%3Econst [state, setState]%3C/text%3E%3Ctext x='0' y='140' fill='%230060B610' font-family='monospace' font-size='10'%3E%3C/component%3E%3C/text%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%' height='100%' fill='url(%23code)'/%3E%3C/svg%3E");
-  }
-  
-  /* Animate particles (footer background) */
-  .particles::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-      radial-gradient(#0060B640 1.7px, transparent 1.7px),
-      radial-gradient(#3380FF26 1.2px, transparent 1.2px),
-      radial-gradient(#f6faff50 0.8px, transparent 0.8px);
-    background-size: 42px 42px, 53px 53px, 80px 80px;
-    background-position: 0 0, 30px 18px, 47px 20px;
-    z-index: 0;
+
+  p {
+    @apply text-base leading-relaxed;
   }
 }
