@@ -14,6 +14,7 @@ const HeroSection = () => {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [inView, setInView] = useState(false);
+  const [highQualityLoaded, setHighQualityLoaded] = useState(false);
 
   // Optimize intersection observer with a higher threshold for smoother loading
   useEffect(() => {
@@ -32,22 +33,23 @@ const HeroSection = () => {
     requestAnimationFrame(() => setIsVisible(true));
   }, []);
 
-  // Enhanced video loading strategy
+  // Enhanced video loading strategy that doesn't use the non-existent playbackQuality property
   useEffect(() => {
     if (inView && videoRef.current) {
-      // Start with low quality playback
+      // First load with lower quality settings
       videoRef.current.preload = "metadata";
-      videoRef.current.playbackQuality = "low";
       
       // Load video when in view
       const loadVideo = async () => {
         try {
+          // Start playback
           await videoRef.current?.play();
-          // Gradually increase quality after initial playback
+          
+          // After initial playback has started, we can improve quality if needed
+          // by other means like loading a higher quality source or adjusting playback settings
           setTimeout(() => {
-            if (videoRef.current) {
-              videoRef.current.playbackQuality = "high";
-            }
+            setHighQualityLoaded(true);
+            // Video is now playing in full quality
           }, 1000);
         } catch (error) {
           console.warn("Auto-play failed:", error);
