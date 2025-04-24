@@ -122,7 +122,7 @@ const ContactSection = () => {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Name"
-                className="p-3 rounded-md border"
+                className="p-3 rounded border border-gray-200"
               />
               <Input
                 name="email"
@@ -130,7 +130,7 @@ const ContactSection = () => {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="E-Mail"
-                className="p-3 rounded-md border"
+                className="p-3 rounded border border-gray-200"
               />
               <Input
                 name="phone"
@@ -138,14 +138,14 @@ const ContactSection = () => {
                 value={formData.phone}
                 onChange={handleChange}
                 placeholder="Phone Number"
-                className="p-3 rounded-md border"
+                className="p-3 rounded border border-gray-200"
               />
               <Input
                 name="subject"
                 value={formData.subject}
                 onChange={handleChange}
                 placeholder="Subject"
-                className="p-3 rounded-md border"
+                className="p-3 rounded border border-gray-200"
               />
             </div>
             <Textarea
@@ -154,7 +154,7 @@ const ContactSection = () => {
               onChange={handleChange}
               placeholder="Your message here"
               rows={5}
-              className="w-full p-3 rounded-md border"
+              className="w-full p-3 rounded border border-gray-200"
             />
             <Button
               className="bg-gradient-to-r from-blue-700 to-blue-500 hover:from-blue-800 hover:to-blue-600 text-white px-6 py-3 rounded-md"
