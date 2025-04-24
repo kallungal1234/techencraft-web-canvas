@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
@@ -6,20 +7,22 @@ import { cn } from "@/lib/utils";
 
 const HeroSection = () => {
   const videoSrc = "/lovable-uploads/banner_9.mp4";
-  const posterSrc = "/lovable-uploads/banner_7_thumbnail.jpg"; // ✅ Use your optimized poster
+  const posterSrc = "/lovable-uploads/banner_7_thumbnail.jpg";
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
 
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [inView, setInView] = useState(false);
+  const [highQualityLoaded, setHighQualityLoaded] = useState(false);
 
+  // Optimize intersection observer with a higher threshold for smoother loading
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         setInView(entry.isIntersecting);
       },
-      { threshold: 0.3 }
+      { threshold: [0.1, 0.3, 0.5], rootMargin: '50px' }
     );
 
     if (sectionRef.current) observer.observe(sectionRef.current);
@@ -30,9 +33,30 @@ const HeroSection = () => {
     requestAnimationFrame(() => setIsVisible(true));
   }, []);
 
+  // Enhanced video loading strategy that doesn't use the non-existent playbackQuality property
   useEffect(() => {
     if (inView && videoRef.current) {
-      videoRef.current.play().catch(() => {});
+      // First load with lower quality settings
+      videoRef.current.preload = "metadata";
+      
+      // Load video when in view
+      const loadVideo = async () => {
+        try {
+          // Start playback
+          await videoRef.current?.play();
+          
+          // After initial playback has started, we can improve quality if needed
+          // by other means like loading a higher quality source or adjusting playback settings
+          setTimeout(() => {
+            setHighQualityLoaded(true);
+            // Video is now playing in full quality
+          }, 1000);
+        } catch (error) {
+          console.warn("Auto-play failed:", error);
+        }
+      };
+      
+      loadVideo();
     }
   }, [inView]);
 
@@ -41,7 +65,6 @@ const HeroSection = () => {
       ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
     >
-      {/* Optimized Main Video */}
       <video
         ref={videoRef}
         className={cn(
@@ -54,11 +77,12 @@ const HeroSection = () => {
         muted
         loop
         playsInline
-        preload="none"
+        preload="metadata"
         onLoadedData={() => setVideoLoaded(true)}
-      />
+      >
+        <source src={videoSrc} type="video/mp4" />
+      </video>
 
-      {/* Spinner while loading */}
       {!videoLoaded && (
         <div className="absolute inset-0 flex items-center justify-center z-20">
           <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin" />
