@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
@@ -14,12 +15,13 @@ const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [inView, setInView] = useState(false);
 
+  // Optimize intersection observer with a higher threshold for smoother loading
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         setInView(entry.isIntersecting);
       },
-      { threshold: 0.3 }
+      { threshold: [0.1, 0.3, 0.5], rootMargin: '50px' }
     );
 
     if (sectionRef.current) observer.observe(sectionRef.current);
@@ -30,11 +32,29 @@ const HeroSection = () => {
     requestAnimationFrame(() => setIsVisible(true));
   }, []);
 
+  // Enhanced video loading strategy
   useEffect(() => {
     if (inView && videoRef.current) {
-      // Preload metadata only when in view
+      // Start with low quality playback
       videoRef.current.preload = "metadata";
-      videoRef.current.play().catch(() => {});
+      videoRef.current.playbackQuality = "low";
+      
+      // Load video when in view
+      const loadVideo = async () => {
+        try {
+          await videoRef.current?.play();
+          // Gradually increase quality after initial playback
+          setTimeout(() => {
+            if (videoRef.current) {
+              videoRef.current.playbackQuality = "high";
+            }
+          }, 1000);
+        } catch (error) {
+          console.warn("Auto-play failed:", error);
+        }
+      };
+      
+      loadVideo();
     }
   }, [inView]);
 
@@ -43,7 +63,6 @@ const HeroSection = () => {
       ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
     >
-      {/* Optimized Video Element */}
       <video
         ref={videoRef}
         className={cn(
@@ -62,14 +81,12 @@ const HeroSection = () => {
         <source src={videoSrc} type="video/mp4" />
       </video>
 
-      {/* Loading Spinner */}
       {!videoLoaded && (
         <div className="absolute inset-0 flex items-center justify-center z-20">
           <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin" />
         </div>
       )}
 
-      {/* Content Section */}
       <div className="container mx-auto px-4 md:px-6 relative z-30">
         <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
           <h1
