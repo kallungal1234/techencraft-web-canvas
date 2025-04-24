@@ -100,7 +100,7 @@ const HeroSection = () => {
               isVisible ? "opacity-100 animate-fade-in" : "opacity-0"
             )}
           >
-            <Button size="lg" className="button-gradient">
+            <Button size="lg" className="bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded">
               <a href="#about">Get Started</a>
             </Button>
           </div>
