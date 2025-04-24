@@ -12,16 +12,15 @@ const LatestProjects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
 
   const projects = [
-    { image: "/lovable-uploads/banking.jpg", title: "Banking Domain", category: "Web Development", description: "A secure and modern banking solution." },
+    { image: "/lovable-uploads/bank.jpeg", title: "Banking Domain", category: "Web Development", description: "A secure and modern banking solution." },
     { image: "/lovable-uploads/lowyer.jpeg", title: "Lowyers Diary", category: "Web Development", description: "Case and appointment management for law firms." },
     { image: "/lovable-uploads/school.png", title: "Schooling App", category: "Mobile Development", description: "Attendance, grading, and parent-teacher interaction." },
     { image: "/lovable-uploads/matrimoniyal.jpeg", title: "Indian Matrimonial", category: "Web Development", description: "Modern matchmaking with cultural integration." },
-    { image: "/lovable-uploads/convergence.png", title: "Educational Platform", category: "CMS Development", description: "Course management and LMS features." },
-    { image: "/lovable-uploads/mrf.jpeg", title: "MRF Tyre Retreading", category: "ERP Application", description: "Complete retreading process tracking system." },
-    { image: "/lovable-uploads/ecommerce.jpg", title: "E-commerce Platform", category: "Web Development", description: "Multi-vendor shopping solution with analytics." },
-    { image: "/lovable-uploads/portfolio.jpg", title: "Portfolio Showcase", category: "Design + Dev", description: "Personal brand presentation and project gallery." },
-    { image: "/lovable-uploads/restaurant.jpg", title: "Restaurant Ordering System", category: "Mobile Development", description: "Mobile-first food ordering and reservations." },
-    { image: "/lovable-uploads/ai-dashboard.jpg", title: "AI Analytics Dashboard", category: "AI/ML", description: "Real-time analytics with machine learning insights." },
+    { image: "/lovable-uploads/educational.jpg", title: "Educational Platform", category: "CMS Development", description: "Course management and LMS features." },
+    { image: "/lovable-uploads/mrf_image.jpeg", title: "MRF Tyre Retreading", category: "ERP Application", description: "Complete retreading process tracking system." },
+    { image: "/lovable-uploads/tution.png", title: "Online Learning Platform", category: "Web Development", description: "The Best Online Tuition and Scholarship-Based Learning App." },
+    { image: "/lovable-uploads/restaurant.png", title: "A vibrant and responsive website", category: "Mobile Development", description: "For a Canadian-based South Indian restaurant." },
+    { image: "/lovable-uploads/learns.png", title: "Dr. Dan’s LEARNS", category: "Custom web application", description: "Nurturing young minds through play and creativity." },
   ];
 
   const closeModal = () => setSelectedProject(null);
@@ -59,9 +58,10 @@ const LatestProjects = () => {
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-48 md:h-60 object-contain bg-white p-2"
                   loading="lazy"
                 />
+
                 <div className="p-4">
                   <h3 className="text-lg font-semibold text-tech-blue-800 group-hover:text-tech-blue-600 transition-colors duration-300">
                     {project.title}
@@ -92,7 +92,12 @@ const LatestProjects = () => {
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-60 object-cover" />
+              <img
+                src={selectedProject.image}
+                alt={selectedProject.title}
+                className="w-full h-60 md:h-72 object-contain bg-white"
+              />
+
               <div className="p-6">
                 <h3 className="text-xl font-semibold text-tech-blue-800">{selectedProject.title}</h3>
                 <p className="text-sm text-gray-500">{selectedProject.category}</p>

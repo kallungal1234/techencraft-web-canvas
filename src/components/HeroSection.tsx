@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const HeroSection = () => {
-  const videoSrc = "/lovable-uploads/banner_8.mp4";
+  const videoSrc = "/lovable-uploads/banner_9.mp4";
   const posterSrc = "/lovable-uploads/banner_7_thumbnail.jpg"; // ✅ Use your optimized poster
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
