@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 const HeroSection = () => {
   const videoSrc = "/lovable-uploads/banner_9.mp4";
-  const posterSrc = "/lovable-uploads/banner_7_thumbnail.jpg"; // ✅ Use your optimized poster
+  const posterSrc = "/lovable-uploads/banner_7_thumbnail.jpg";
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
 
@@ -32,6 +32,8 @@ const HeroSection = () => {
 
   useEffect(() => {
     if (inView && videoRef.current) {
+      // Preload metadata only when in view
+      videoRef.current.preload = "metadata";
       videoRef.current.play().catch(() => {});
     }
   }, [inView]);
@@ -41,7 +43,7 @@ const HeroSection = () => {
       ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
     >
-      {/* Optimized Main Video */}
+      {/* Optimized Video Element */}
       <video
         ref={videoRef}
         className={cn(
@@ -54,17 +56,20 @@ const HeroSection = () => {
         muted
         loop
         playsInline
-        preload="none"
+        preload="metadata"
         onLoadedData={() => setVideoLoaded(true)}
-      />
+      >
+        <source src={videoSrc} type="video/mp4" />
+      </video>
 
-      {/* Spinner while loading */}
+      {/* Loading Spinner */}
       {!videoLoaded && (
         <div className="absolute inset-0 flex items-center justify-center z-20">
           <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin" />
         </div>
       )}
 
+      {/* Content Section */}
       <div className="container mx-auto px-4 md:px-6 relative z-30">
         <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
           <h1
