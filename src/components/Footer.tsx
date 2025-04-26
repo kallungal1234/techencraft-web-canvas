@@ -63,16 +63,22 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center">
                 <Mail className="h-5 w-5 mr-3 text-tech-blue-200" />
-                <a href="mailto:info@techencraft.com" className="text-tech-blue-100 hover:text-white transition-colors duration-200">
-                  info@techencraft.com
+                <a href="mailto:josbobby@gmail.com" className="text-tech-blue-100 hover:text-white transition-colors duration-200">
+                  josbobby@gmail.com
                 </a>
               </div>
-              <div className="flex items-center">
+                <div className="flex items-center">
                 <Phone className="h-5 w-5 mr-3 text-tech-blue-200" />
-                <a href="tel:+1234567890" className="text-tech-blue-100 hover:text-white transition-colors duration-200">
-                  +1 (234) 567-890
+                <a href="tel:+917012325044" className="text-tech-blue-100 hover:text-white transition-colors duration-200">
+                +91-7012325044
                 </a>
-              </div>
+                </div>
+                <div className="flex items-center">
+                <Phone className="h-5 w-5 mr-3 text-tech-blue-200" />
+                <a href="tel:+919995024494" className="text-tech-blue-100 hover:text-white transition-colors duration-200">
+                +91-9995024494
+                </a>
+                </div>
             </div>
           </div>
         </div>

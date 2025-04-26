@@ -79,14 +79,14 @@ const ContactSection = () => {
               <Phone className="w-5 h-5 mt-1" />
               <div>
                 <p className="font-semibold">Phone:</p>
-                <p>+91-990 994 3320</p>
+                <p>+91-7012325044</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <Mail className="w-5 h-5 mt-1" />
               <div>
                 <p className="font-semibold">Email:</p>
-                <p>info@techencraft.com</p>
+                <p>josbobby@gmail.com</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -94,11 +94,11 @@ const ContactSection = () => {
               <div>
                 <p className="font-semibold">Address:</p>
                 <p>
-                  B-817 Navratna Corporate Park,
+                  11/8B, Opp Sayoojya Apartments,
                   <br />
-                  Iskcon Ambli Road, Ahmedabad,
+                  UP School Road, Padamughal, Kakkanad,
                   <br />
-                  Gujarat 380058
+                  Kochi, 682030, India
                 </p>
               </div>
             </div>
