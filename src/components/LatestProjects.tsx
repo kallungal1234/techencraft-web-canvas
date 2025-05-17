@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
@@ -8,20 +9,22 @@ import 'swiper/css/pagination';
 import 'swiper/css/effect-coverflow';
 import { cn } from '@/lib/utils';
 
+// Import projects from a separate file that can be shared with AdminPortal
+const projects = [
+  { image: "/lovable-uploads/bank.jpeg", title: "Banking Domain", category: "Web Development", description: "A secure and modern banking solution." },
+  { image: "/lovable-uploads/lowyer.jpeg", title: "Lowyers Diary", category: "Web Development", description: "Case and appointment management for law firms." },
+  { image: "/lovable-uploads/school.png", title: "Schooling App", category: "Web Development", description: "Attendance, grading, and parent-teacher interaction." },
+  { image: "/lovable-uploads/matrimoniyal.jpeg", title: "Indian Matrimonial", category: "Mobile Development", description: "Modern matchmaking with cultural integration." },
+  { image: "/lovable-uploads/educational.jpg", title: "Educational Platform", category: "Mobile Development", description: "Course management and LMS features." },
+  { image: "/lovable-uploads/mrf_image.jpeg", title: "MRF Tyre Retreading", category: "ERP Application", description: "Complete retreading process tracking system." },
+  { image: "/lovable-uploads/tution.png", title: "Online Learning Platform", category: "Web Development", description: "The Best Online Tuition and Scholarship-Based Learning App." },
+  { image: "/lovable-uploads/restaurant.png", title: "A vibrant and responsive website", category: "Mobile Development", description: "For a Canadian-based South Indian restaurant." },
+  { image: "/lovable-uploads/learns.png", title: "Dr. Dan's LEARNS", category: "Custom web application", description: "Nurturing young minds through play and creativity." },
+  { image: "/lovable-uploads/bfd5ec07-c4dd-4453-81c3-754563280891.png", title: "Industrial Cooling Solutions", category: "Industrial Equipment", description: "Stockist & Supplier of high-quality Cooling Towers, ABS/PVC Fills, Fans, Pumps, Nozzles, Sprinklers, and more." },
+];
+
 const LatestProjects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
-
-  const projects = [
-     { image: "/lovable-uploads/bank.jpeg", title: "Banking Domain", category: "Web Development", description: "A secure and modern banking solution." },
-     { image: "/lovable-uploads/lowyer.jpeg", title: "Lowyers Diary", category: "Web Development", description: "Case and appointment management for law firms." },
-     { image: "/lovable-uploads/school.png", title: "Schooling App", category: "Web Development", description: "Attendance, grading, and parent-teacher interaction." },
-     { image: "/lovable-uploads/matrimoniyal.jpeg", title: "Indian Matrimonial", category: "Mobile Development", description: "Modern matchmaking with cultural integration." },
-     { image: "/lovable-uploads/educational.jpg", title: "Educational Platform", category: "Mobile Development", description: "Course management and LMS features." },
-     { image: "/lovable-uploads/mrf_image.jpeg", title: "MRF Tyre Retreading", category: "ERP Application", description: "Complete retreading process tracking system." },
-     { image: "/lovable-uploads/tution.png", title: "Online Learning Platform", category: "Web Development", description: "The Best Online Tuition and Scholarship-Based Learning App." },
-     { image: "/lovable-uploads/restaurant.png", title: "A vibrant and responsive website", category: "Mobile Development", description: "For a Canadian-based South Indian restaurant." },
-     { image: "/lovable-uploads/learns.png", title: "Dr. Dan’s LEARNS", category: "Custom web application", description: "Nurturing young minds through play and creativity." },
-   ];
 
   const closeModal = () => setSelectedProject(null);
 
